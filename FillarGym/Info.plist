@@ -2,5 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>音声録音機能を使用して、フィラー語の分析を行います。録音データはデバイス内にのみ保存され、分析のためOpenAI APIに一時的に送信されます。</string>
+	<key>OPENAI_API_KEY_PROD</key>
+	<string>$(OPENAI_API_KEY_PROD)</string>
 </dict>
 </plist>

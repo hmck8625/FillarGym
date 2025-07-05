@@ -11,6 +11,7 @@
 - `FIREBASE_SETUP.md` - Firebase Analytics セットアップ
 - `XCODE_SETUP_COMMANDS.md` - Xcode設定コマンド集
 - `QUICK_START.md` - 5分でアプリを起動する手順
+- `ENVIRONMENT_SETUP.md` - 環境変数・APIキー設定方法
 
 ### `/development` - 開発・デバッグ
 - `API_DEBUG_GUIDE.md` - API通信のデバッグ方法

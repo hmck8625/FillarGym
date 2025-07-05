@@ -22,12 +22,11 @@ class OpenAIService: ObservableObject {
             return plistKey
         }
         
-        // 4. ハードコードされたAPIキー（開発用）
-        // 注意: 本番環境では使用しないでください
-        let hardcodedKey = "sk-placeholder-key-for-development"
-        if !hardcodedKey.isEmpty && hardcodedKey != "sk-placeholder-key-for-development" {
-            try? KeychainManager.shared.save(hardcodedKey, for: .openAIAPIKey)
-            return hardcodedKey
+        // 4. アプリ内設定（リリースビルド用）
+        // Info.plistから取得
+        if let bundleKey = Bundle.main.object(forInfoDictionaryKey: "OPENAI_API_KEY_PROD") as? String, !bundleKey.isEmpty {
+            try? KeychainManager.shared.save(bundleKey, for: .openAIAPIKey)
+            return bundleKey
         }
         
         return ""

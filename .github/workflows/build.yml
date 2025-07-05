@@ -1,0 +1,90 @@
+name: Build and Test FillarGym
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '15.0'
+    
+    - name: Cache CocoaPods
+      uses: actions/cache@v3
+      with:
+        path: Pods
+        key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-pods-
+    
+    - name: Install CocoaPods dependencies
+      run: |
+        cd FillarGym
+        pod install --repo-update
+    
+    - name: Build for testing
+      run: |
+        cd FillarGym
+        xcodebuild \
+          -workspace FillarGym.xcworkspace \
+          -scheme FillarGym \
+          -destination 'platform=iOS Simulator,name=iPhone 15 Pro' \
+          -configuration Debug \
+          OPENAI_API_KEY_PROD="${{ secrets.OPENAI_API_KEY }}" \
+          build-for-testing
+    
+    - name: Run tests
+      run: |
+        cd FillarGym
+        xcodebuild \
+          -workspace FillarGym.xcworkspace \
+          -scheme FillarGym \
+          -destination 'platform=iOS Simulator,name=iPhone 15 Pro' \
+          -configuration Debug \
+          test-without-building
+
+  archive:
+    runs-on: macos-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '15.0'
+    
+    - name: Install CocoaPods dependencies
+      run: |
+        cd FillarGym
+        pod install --repo-update
+    
+    - name: Archive app
+      run: |
+        cd FillarGym
+        xcodebuild \
+          -workspace FillarGym.xcworkspace \
+          -scheme FillarGym \
+          -configuration Release \
+          -archivePath FillarGym.xcarchive \
+          OPENAI_API_KEY_PROD="${{ secrets.OPENAI_API_KEY }}" \
+          archive
+    
+    - name: Upload archive artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: FillarGym-Archive
+        path: FillarGym/FillarGym.xcarchive
