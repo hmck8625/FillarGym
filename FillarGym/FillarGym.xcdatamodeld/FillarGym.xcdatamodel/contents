@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="false" userDefinedModelVersionIdentifier="">
+    <entity name="AudioSession" representedClassName="AudioSession" syncable="YES" codeGenerationType="class">
+        <attribute name="createdAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="duration" optional="NO" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="filePath" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="transcription" optional="YES" attributeType="String"/>
+        <relationship name="analysis" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="FillerAnalysis" inverseName="audioSession" inverseEntity="FillerAnalysis"/>
+    </entity>
+    <entity name="FillerAnalysis" representedClassName="FillerAnalysis" syncable="YES" codeGenerationType="class">
+        <attribute name="analysisDate" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="fillerCount" optional="NO" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="fillerRate" optional="NO" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="speakingSpeed" optional="NO" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="audioSession" optional="NO" maxCount="1" deletionRule="Nullify" destinationEntity="AudioSession" inverseName="analysis" inverseEntity="AudioSession"/>
+        <relationship name="fillerWords" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="FillerWord" inverseName="analysis" inverseEntity="FillerWord"/>
+    </entity>
+    <entity name="FillerWord" representedClassName="FillerWord" syncable="YES" codeGenerationType="class">
+        <attribute name="confidence" optional="NO" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="count" optional="NO" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="timestamp" optional="NO" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="word" optional="NO" attributeType="String"/>
+        <relationship name="analysis" optional="NO" maxCount="1" deletionRule="Nullify" destinationEntity="FillerAnalysis" inverseName="fillerWords" inverseEntity="FillerAnalysis"/>
+    </entity>
+    <entity name="UserSettings" representedClassName="UserSettings" syncable="YES" codeGenerationType="class">
+        <attribute name="customFillerWords" optional="YES" attributeType="String"/>
+        <attribute name="detectionSensitivity" optional="NO" attributeType="Integer 16" defaultValueString="1" usesScalarValueType="YES"/>
+        <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="isPremium" optional="NO" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="language" optional="NO" attributeType="String" defaultValueString="ja"/>
+        <attribute name="monthlyGoal" optional="NO" attributeType="Integer 16" defaultValueString="10" usesScalarValueType="YES"/>
+        <attribute name="notificationEnabled" optional="NO" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="updatedAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+    <elements>
+        <element name="AudioSession" positionX="-63" positionY="-18" width="128" height="148"/>
+        <element name="FillerAnalysis" positionX="144" positionY="-18" width="128" height="148"/>
+        <element name="FillerWord" positionX="351" positionY="-18" width="128" height="133"/>
+        <element name="UserSettings" positionX="-63" positionY="171" width="128" height="163"/>
+    </elements>
+</model>

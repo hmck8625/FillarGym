@@ -1,0 +1,743 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		04A341688F103780B8DA1257 /* Pods_FillarGymTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE0B3EC5DD3D999AE7A8678 /* Pods_FillarGymTests.framework */; };
+		0A7FE4BB189DA88AFF76649A /* Pods_FillarGym_FillarGymUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BEFDC28003521CBE052978F /* Pods_FillarGym_FillarGymUITests.framework */; };
+		2F9784EB1393DAB151C81507 /* Pods_FillarGym.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31E519D1666BBF624241F3AB /* Pods_FillarGym.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1A5432112E1905BB00809CE1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1A5431F62E1905B900809CE1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1A5431FD2E1905B900809CE1;
+			remoteInfo = FillarGym;
+		};
+		1A54321B2E1905BB00809CE1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1A5431F62E1905B900809CE1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1A5431FD2E1905B900809CE1;
+			remoteInfo = FillarGym;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1A5431FE2E1905B900809CE1 /* FillarGym.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FillarGym.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A5432102E1905BB00809CE1 /* FillarGymTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FillarGymTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A54321A2E1905BB00809CE1 /* FillarGymUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FillarGymUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		31E519D1666BBF624241F3AB /* Pods_FillarGym.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FillarGym.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3BEFDC28003521CBE052978F /* Pods_FillarGym_FillarGymUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FillarGym_FillarGymUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3E918FF8F471EBA1E2965355 /* Pods-FillarGym-FillarGymUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FillarGym-FillarGymUITests.release.xcconfig"; path = "Target Support Files/Pods-FillarGym-FillarGymUITests/Pods-FillarGym-FillarGymUITests.release.xcconfig"; sourceTree = "<group>"; };
+		6AFCF74EFF75181CB468823D /* Pods-FillarGymTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FillarGymTests.release.xcconfig"; path = "Target Support Files/Pods-FillarGymTests/Pods-FillarGymTests.release.xcconfig"; sourceTree = "<group>"; };
+		8150E3AA172A1C7FA991B491 /* Pods-FillarGym.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FillarGym.release.xcconfig"; path = "Target Support Files/Pods-FillarGym/Pods-FillarGym.release.xcconfig"; sourceTree = "<group>"; };
+		CDE0B3EC5DD3D999AE7A8678 /* Pods_FillarGymTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FillarGymTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E3029331A26F94C3E77E2A5E /* Pods-FillarGymTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FillarGymTests.debug.xcconfig"; path = "Target Support Files/Pods-FillarGymTests/Pods-FillarGymTests.debug.xcconfig"; sourceTree = "<group>"; };
+		EAA41D4169FB1BC8C05AEFB4 /* Pods-FillarGym-FillarGymUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FillarGym-FillarGymUITests.debug.xcconfig"; path = "Target Support Files/Pods-FillarGym-FillarGymUITests/Pods-FillarGym-FillarGymUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		F7F2D3564DB47EF74C345871 /* Pods-FillarGym.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FillarGym.debug.xcconfig"; path = "Target Support Files/Pods-FillarGym/Pods-FillarGym.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		1A5432562E191B3A00809CE1 /* Exceptions for "FillarGym" folder in "FillarGym" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1A5431FD2E1905B900809CE1 /* FillarGym */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		1A5432002E1905B900809CE1 /* FillarGym */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				1A5432562E191B3A00809CE1 /* Exceptions for "FillarGym" folder in "FillarGym" target */,
+			);
+			path = FillarGym;
+			sourceTree = "<group>";
+		};
+		1A5432132E1905BB00809CE1 /* FillarGymTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = FillarGymTests;
+			sourceTree = "<group>";
+		};
+		1A54321D2E1905BB00809CE1 /* FillarGymUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = FillarGymUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1A5431FB2E1905B900809CE1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2F9784EB1393DAB151C81507 /* Pods_FillarGym.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1A54320D2E1905BB00809CE1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04A341688F103780B8DA1257 /* Pods_FillarGymTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1A5432172E1905BB00809CE1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A7FE4BB189DA88AFF76649A /* Pods_FillarGym_FillarGymUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		15BD6C65F0B5DF28B2291FB0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				31E519D1666BBF624241F3AB /* Pods_FillarGym.framework */,
+				3BEFDC28003521CBE052978F /* Pods_FillarGym_FillarGymUITests.framework */,
+				CDE0B3EC5DD3D999AE7A8678 /* Pods_FillarGymTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1A5431F52E1905B900809CE1 = {
+			isa = PBXGroup;
+			children = (
+				1A5432002E1905B900809CE1 /* FillarGym */,
+				1A5432132E1905BB00809CE1 /* FillarGymTests */,
+				1A54321D2E1905BB00809CE1 /* FillarGymUITests */,
+				1A5431FF2E1905B900809CE1 /* Products */,
+				A6F7453E0C8F742D3BD60654 /* Pods */,
+				15BD6C65F0B5DF28B2291FB0 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		1A5431FF2E1905B900809CE1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1A5431FE2E1905B900809CE1 /* FillarGym.app */,
+				1A5432102E1905BB00809CE1 /* FillarGymTests.xctest */,
+				1A54321A2E1905BB00809CE1 /* FillarGymUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A6F7453E0C8F742D3BD60654 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F7F2D3564DB47EF74C345871 /* Pods-FillarGym.debug.xcconfig */,
+				8150E3AA172A1C7FA991B491 /* Pods-FillarGym.release.xcconfig */,
+				EAA41D4169FB1BC8C05AEFB4 /* Pods-FillarGym-FillarGymUITests.debug.xcconfig */,
+				3E918FF8F471EBA1E2965355 /* Pods-FillarGym-FillarGymUITests.release.xcconfig */,
+				E3029331A26F94C3E77E2A5E /* Pods-FillarGymTests.debug.xcconfig */,
+				6AFCF74EFF75181CB468823D /* Pods-FillarGymTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1A5431FD2E1905B900809CE1 /* FillarGym */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A5432242E1905BB00809CE1 /* Build configuration list for PBXNativeTarget "FillarGym" */;
+			buildPhases = (
+				5AC972A6B49F2E97C09564DA /* [CP] Check Pods Manifest.lock */,
+				1A5431FA2E1905B900809CE1 /* Sources */,
+				1A5431FB2E1905B900809CE1 /* Frameworks */,
+				1A5431FC2E1905B900809CE1 /* Resources */,
+				0DB37A88C7F5F5201C46E1E6 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				1A5432002E1905B900809CE1 /* FillarGym */,
+			);
+			name = FillarGym;
+			productName = FillarGym;
+			productReference = 1A5431FE2E1905B900809CE1 /* FillarGym.app */;
+			productType = "com.apple.product-type.application";
+		};
+		1A54320F2E1905BB00809CE1 /* FillarGymTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A5432272E1905BB00809CE1 /* Build configuration list for PBXNativeTarget "FillarGymTests" */;
+			buildPhases = (
+				2E7FC1F22C123ED8DED27F39 /* [CP] Check Pods Manifest.lock */,
+				1A54320C2E1905BB00809CE1 /* Sources */,
+				1A54320D2E1905BB00809CE1 /* Frameworks */,
+				1A54320E2E1905BB00809CE1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1A5432122E1905BB00809CE1 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				1A5432132E1905BB00809CE1 /* FillarGymTests */,
+			);
+			name = FillarGymTests;
+			productName = FillarGymTests;
+			productReference = 1A5432102E1905BB00809CE1 /* FillarGymTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		1A5432192E1905BB00809CE1 /* FillarGymUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A54322A2E1905BB00809CE1 /* Build configuration list for PBXNativeTarget "FillarGymUITests" */;
+			buildPhases = (
+				A4C154821A443490D28D261D /* [CP] Check Pods Manifest.lock */,
+				1A5432162E1905BB00809CE1 /* Sources */,
+				1A5432172E1905BB00809CE1 /* Frameworks */,
+				1A5432182E1905BB00809CE1 /* Resources */,
+				2DB35CE4749DFC7CEDA19DE4 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1A54321C2E1905BB00809CE1 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				1A54321D2E1905BB00809CE1 /* FillarGymUITests */,
+			);
+			name = FillarGymUITests;
+			productName = FillarGymUITests;
+			productReference = 1A54321A2E1905BB00809CE1 /* FillarGymUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1A5431F62E1905B900809CE1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					1A5431FD2E1905B900809CE1 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					1A54320F2E1905BB00809CE1 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 1A5431FD2E1905B900809CE1;
+					};
+					1A5432192E1905BB00809CE1 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 1A5431FD2E1905B900809CE1;
+					};
+				};
+			};
+			buildConfigurationList = 1A5431F92E1905B900809CE1 /* Build configuration list for PBXProject "FillarGym" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1A5431F52E1905B900809CE1;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 1A5431FF2E1905B900809CE1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1A5431FD2E1905B900809CE1 /* FillarGym */,
+				1A54320F2E1905BB00809CE1 /* FillarGymTests */,
+				1A5432192E1905BB00809CE1 /* FillarGymUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1A5431FC2E1905B900809CE1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1A54320E2E1905BB00809CE1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1A5432182E1905BB00809CE1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0DB37A88C7F5F5201C46E1E6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FillarGym/Pods-FillarGym-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FillarGym/Pods-FillarGym-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FillarGym/Pods-FillarGym-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2DB35CE4749DFC7CEDA19DE4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FillarGym-FillarGymUITests/Pods-FillarGym-FillarGymUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FillarGym-FillarGymUITests/Pods-FillarGym-FillarGymUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FillarGym-FillarGymUITests/Pods-FillarGym-FillarGymUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2E7FC1F22C123ED8DED27F39 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FillarGymTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5AC972A6B49F2E97C09564DA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FillarGym-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A4C154821A443490D28D261D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FillarGym-FillarGymUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1A5431FA2E1905B900809CE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1A54320C2E1905BB00809CE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1A5432162E1905BB00809CE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1A5432122E1905BB00809CE1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1A5431FD2E1905B900809CE1 /* FillarGym */;
+			targetProxy = 1A5432112E1905BB00809CE1 /* PBXContainerItemProxy */;
+		};
+		1A54321C2E1905BB00809CE1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1A5431FD2E1905B900809CE1 /* FillarGym */;
+			targetProxy = 1A54321B2E1905BB00809CE1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1A5432222E1905BB00809CE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 4V5LG9RUP9;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		1A5432232E1905BB00809CE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 4V5LG9RUP9;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		1A5432252E1905BB00809CE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F7F2D3564DB47EF74C345871 /* Pods-FillarGym.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4V5LG9RUP9;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FillarGym/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "音声録音機能を使用してフィラー語を分析します";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = DH.FillarGym;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1A5432262E1905BB00809CE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8150E3AA172A1C7FA991B491 /* Pods-FillarGym.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4V5LG9RUP9;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FillarGym/Info.plist;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "音声録音機能を使用してフィラー語を分析します";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = DH.FillarGym;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		1A5432282E1905BB00809CE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E3029331A26F94C3E77E2A5E /* Pods-FillarGymTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4V5LG9RUP9;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = DH.FillarGymTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FillarGym.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FillarGym";
+			};
+			name = Debug;
+		};
+		1A5432292E1905BB00809CE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6AFCF74EFF75181CB468823D /* Pods-FillarGymTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4V5LG9RUP9;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = DH.FillarGymTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FillarGym.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FillarGym";
+			};
+			name = Release;
+		};
+		1A54322B2E1905BB00809CE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EAA41D4169FB1BC8C05AEFB4 /* Pods-FillarGym-FillarGymUITests.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4V5LG9RUP9;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = DH.FillarGymUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FillarGym;
+			};
+			name = Debug;
+		};
+		1A54322C2E1905BB00809CE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3E918FF8F471EBA1E2965355 /* Pods-FillarGym-FillarGymUITests.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4V5LG9RUP9;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = DH.FillarGymUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = FillarGym;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1A5431F92E1905B900809CE1 /* Build configuration list for PBXProject "FillarGym" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A5432222E1905BB00809CE1 /* Debug */,
+				1A5432232E1905BB00809CE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1A5432242E1905BB00809CE1 /* Build configuration list for PBXNativeTarget "FillarGym" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A5432252E1905BB00809CE1 /* Debug */,
+				1A5432262E1905BB00809CE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1A5432272E1905BB00809CE1 /* Build configuration list for PBXNativeTarget "FillarGymTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A5432282E1905BB00809CE1 /* Debug */,
+				1A5432292E1905BB00809CE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1A54322A2E1905BB00809CE1 /* Build configuration list for PBXNativeTarget "FillarGymUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A54322B2E1905BB00809CE1 /* Debug */,
+				1A54322C2E1905BB00809CE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1A5431F62E1905B900809CE1 /* Project object */;
+}
