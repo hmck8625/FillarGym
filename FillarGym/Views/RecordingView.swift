@@ -268,7 +268,7 @@ struct RecordingView: View {
                 }
             }
         }
-        .onChange(of: showingAnalysisView) { isShowing in
+        .onChange(of: showingAnalysisView) { _, isShowing in
             print("📊 showingAnalysisView変更: \(isShowing)")
             print("📊 completedSession: \(completedSession?.id?.uuidString ?? "nil")")
         }
@@ -322,7 +322,8 @@ struct RecordingView: View {
         let session = AudioSession(context: viewContext, 
                                    title: sessionTitle.isEmpty ? "録音セッション" : sessionTitle,
                                    duration: audioRecorder.recordingDuration)
-        session.filePath = recordingURL.path
+        // ファイル名のみを保存（絶対パスではなく）
+        session.filePath = recordingURL.lastPathComponent
         
         // 必須フィールドの確認（デバッグ用）
         print("AudioSession Debug Info:")
@@ -423,7 +424,8 @@ struct RecordingView: View {
         let session = AudioSession(context: viewContext,
                                    title: sessionTitle.isEmpty ? fileName : sessionTitle,
                                    duration: info.duration)
-        session.filePath = copiedURL.path
+        // ファイル名のみを保存（絶対パスではなく）
+        session.filePath = copiedURL.lastPathComponent
         
         // 必須フィールドの確認
         print("AudioSession作成:")
@@ -540,13 +542,13 @@ struct ModernAudioLevelVisualizer: View {
                 pulseAnimation = true
             }
         }
-        .onChange(of: isRecording) { newValue in
+        .onChange(of: isRecording) { _, newValue in
             pulseAnimation = newValue
             withAnimation(DesignSystem.Animation.springBouncy) {
                 animationScale = newValue ? 1.1 : 1.0
             }
         }
-        .onChange(of: level) { _ in
+        .onChange(of: level) { _, _ in
             // Subtle scale animation based on audio level
             if isRecording {
                 withAnimation(.easeInOut(duration: 0.1)) {

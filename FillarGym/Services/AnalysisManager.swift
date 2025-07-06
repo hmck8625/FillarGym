@@ -30,12 +30,40 @@ class AnalysisManager: ObservableObject {
             return
         }
         
-        // ファイルパスからURLを作成（file://形式の場合とパスのみの場合に対応）
+        // ファイルパスからURLを作成
         let audioURL: URL
         if filePath.hasPrefix("file://") {
+            // file://形式の場合
             audioURL = URL(string: filePath)!
-        } else {
+        } else if filePath.hasPrefix("/") {
+            // 絶対パスの場合
             audioURL = URL(fileURLWithPath: filePath)
+        } else {
+            // ファイル名のみの場合はDocumentsディレクトリのパスを追加
+            let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            audioURL = documentsPath.appendingPathComponent(filePath)
+        }
+        
+        print("📁 音声ファイルURL: \(audioURL.path)")
+        
+        // ファイルの存在確認
+        guard FileManager.default.fileExists(atPath: audioURL.path) else {
+            print("❌ 音声ファイルが存在しません: \(audioURL.path)")
+            errorMessage = "音声ファイルが見つかりません"
+            
+            // デバッグ用：Documentsディレクトリの内容を表示
+            if let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+                do {
+                    let contents = try FileManager.default.contentsOfDirectory(at: documentsPath, includingPropertiesForKeys: nil)
+                    print("📁 Documents directory contents:")
+                    for file in contents {
+                        print("  - \(file.lastPathComponent)")
+                    }
+                } catch {
+                    print("❌ Error listing documents directory: \(error)")
+                }
+            }
+            return
         }
         
         print("🚀 分析処理状態初期化")

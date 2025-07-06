@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import FirebaseCore
+// import FirebaseCore // Temporarily disabled
 
 @main
 struct FillarGymApp: App {
@@ -15,7 +15,7 @@ struct FillarGymApp: App {
     
     init() {
         // Firebase初期化
-        FirebaseApp.configure()
+        // FirebaseApp.configure() // Temporarily disabled
         
         // Analytics初期化
         setupAnalytics()

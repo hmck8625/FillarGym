@@ -12,6 +12,9 @@ struct HomeView: View {
     
     @State private var progressTracker: ProgressTracker?
     @State private var showingRecordingView = false
+    @State private var selectedSession: AudioSession?
+    @State private var showingSessionDetail = false
+    @Binding var selectedTab: Int
     
     var body: some View {
         NavigationView {
@@ -53,6 +56,12 @@ struct HomeView: View {
         .sheet(isPresented: $showingRecordingView) {
             RecordingView()
         }
+        .sheet(isPresented: $showingSessionDetail) {
+            if let session = selectedSession {
+                SessionDetailView(session: session)
+                    .environment(\.managedObjectContext, viewContext)
+            }
+        }
         .onAppear {
             if progressTracker == nil {
                 progressTracker = ProgressTracker(viewContext: viewContext)
@@ -69,7 +78,8 @@ struct HomeView: View {
         HStack {
             VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
                 Text("おかえりなさい！")
-                    .font(DesignSystem.Typography.title2)
+                    .font(DesignSystem.Typography.body)
+                    .fontWeight(.light)
                     .foregroundColor(DesignSystem.Colors.textPrimary)
                 
                 Text("今日も話し方の改善を始めましょう")
@@ -111,40 +121,91 @@ struct HomeView: View {
                 Spacer()
                     .frame(height: DesignSystem.Spacing.lg)
                 
-                // Premium Icon with Glow Effect - 中央寄せ
+                // Premium Icon with Enhanced Glow Effect - 中央寄せ
                 ZStack {
+                    // 外側のグロー効果
+                    Circle()
+                        .fill(
+                            RadialGradient(
+                                gradient: Gradient(colors: [
+                                    Color.blue.opacity(0.15),
+                                    Color.blue.opacity(0.08),
+                                    Color.clear
+                                ]),
+                                center: .center,
+                                startRadius: 20,
+                                endRadius: 60
+                            )
+                        )
+                        .frame(width: 120, height: 120)
+                        .blur(radius: 6)
+                    
+                    // メインの背景サークル
                     Circle()
                         .fill(
                             LinearGradient(
                                 gradient: Gradient(colors: [
-                                    DesignSystem.Colors.secondary.opacity(0.3),
-                                    DesignSystem.Colors.primary.opacity(0.1)
+                                    Color.blue.opacity(0.2),
+                                    Color.blue.opacity(0.1),
+                                    DesignSystem.Colors.surfaceElevated
                                 ]),
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             )
                         )
-                        .frame(width: 96, height: 96)
+                        .frame(width: 100, height: 100)
+                        .overlay(
+                            Circle()
+                                .stroke(
+                                    LinearGradient(
+                                        gradient: Gradient(colors: [
+                                            Color.blue.opacity(0.3),
+                                            Color.blue.opacity(0.1)
+                                        ]),
+                                        startPoint: .topLeading,
+                                        endPoint: .bottomTrailing
+                                    ),
+                                    lineWidth: 1.5
+                                )
+                        )
+                        .shadow(
+                            color: Color.blue.opacity(0.2),
+                            radius: 8,
+                            x: 0,
+                            y: 4
+                        )
                     
-                    Image(systemName: "waveform.circle.fill")
-                        .font(.system(size: 56, weight: .medium))
+                    // マイクアイコン
+                    Image(systemName: "mic.fill")
+                        .font(.system(size: 48, weight: .semibold))
                         .foregroundStyle(
                             LinearGradient(
                                 gradient: Gradient(colors: [
-                                    DesignSystem.Colors.secondary,
-                                    DesignSystem.Colors.primary
+                                    Color.blue,
+                                    Color.blue.opacity(0.8)
                                 ]),
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             )
+                        )
+                        .shadow(
+                            color: DesignSystem.Colors.shadowMedium,
+                            radius: 2,
+                            x: 0,
+                            y: 1
                         )
                 }
                 
                 VStack(spacing: DesignSystem.Spacing.md) {
                     Text("録音を開始")
-                        .font(DesignSystem.Typography.title1)
-                        .fontWeight(.bold)
+                        .font(.system(size: 32, weight: .heavy, design: .rounded))
                         .foregroundColor(DesignSystem.Colors.textPrimary)
+                        .shadow(
+                            color: DesignSystem.Colors.shadowLight,
+                            radius: 2,
+                            x: 0,
+                            y: 1
+                        )
                     
                     Text("プロフェッショナルな話し方の分析を始めましょう")
                         .font(DesignSystem.Typography.body)
@@ -153,29 +214,70 @@ struct HomeView: View {
                         .lineLimit(2)
                 }
                 
-                // Premium Gradient Button
-                Text("録音開始")
-                    .font(DesignSystem.Typography.bodyBold)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: DesignSystem.ButtonSize.large)
-                    .background(
+                // Premium Gradient Button with Icon
+                HStack(spacing: DesignSystem.Spacing.sm) {
+                    Image(systemName: "mic.circle.fill")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(.white)
+                    
+                    Text("録音開始")
+                        .font(DesignSystem.Typography.bodyBold)
+                        .foregroundColor(.white)
+                }
+                .frame(maxWidth: .infinity)
+                .frame(height: DesignSystem.ButtonSize.large)
+                .background(
+                    ZStack {
+                        // ベースのグラデーション（青系で緩やか）
                         LinearGradient(
                             gradient: Gradient(colors: [
-                                DesignSystem.Colors.secondary,
-                                DesignSystem.Colors.primary
+                                Color.blue,
+                                Color.blue.opacity(0.9)
                             ]),
                             startPoint: .leading,
                             endPoint: .trailing
                         )
-                    )
-                    .cornerRadius(DesignSystem.CornerRadius.pill)
-                    .shadow(
-                        color: DesignSystem.Colors.shadowMedium,
-                        radius: 8,
-                        x: 0,
-                        y: 4
-                    )
+                        
+                        // 立体感のためのハイライト
+                        LinearGradient(
+                            gradient: Gradient(colors: [
+                                Color.white.opacity(0.2),
+                                Color.clear,
+                                Color.black.opacity(0.05)
+                            ]),
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    }
+                )
+                .cornerRadius(DesignSystem.CornerRadius.pill)
+                .overlay(
+                    RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.pill)
+                        .stroke(
+                            LinearGradient(
+                                gradient: Gradient(colors: [
+                                    Color.white.opacity(0.3),
+                                    Color.clear
+                                ]),
+                                startPoint: .top,
+                                endPoint: .bottom
+                            ),
+                            lineWidth: 1
+                        )
+                )
+                .shadow(
+                    color: Color.blue.opacity(0.3),
+                    radius: 8,
+                    x: 0,
+                    y: 4
+                )
+                .shadow(
+                    color: DesignSystem.Colors.shadowMedium,
+                    radius: 3,
+                    x: 0,
+                    y: 1
+                )
+                .padding(.horizontal, DesignSystem.Spacing.lg)
                 
                 // 下部に適切なスペースを追加してバランスを整える
                 Spacer()
@@ -253,7 +355,7 @@ struct HomeView: View {
                 
                 if !recentSessions.isEmpty {
                     Button("すべて見る") {
-                        // Navigate to history view
+                        selectedTab = 1 // 履歴タブに移動
                     }
                     .font(DesignSystem.Typography.caption)
                     .foregroundColor(DesignSystem.Colors.primary)
@@ -282,7 +384,13 @@ struct HomeView: View {
                 }
             } else {
                 ForEach(recentSessions.prefix(3), id: \.id) { session in
-                    ModernRecentSessionRow(session: session)
+                    Button(action: {
+                        selectedSession = session
+                        showingSessionDetail = true
+                    }) {
+                        ModernRecentSessionRow(session: session)
+                    }
+                    .buttonStyle(.plain)
                 }
             }
         }

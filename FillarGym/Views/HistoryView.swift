@@ -94,8 +94,25 @@ struct HistoryView: View {
                                     session: session,
                                     index: index,
                                     onTap: {
+                                        print("=== HistoryView: Session Card Tapped ===")
+                                        print("📊 Session ID: \(session.id?.uuidString ?? "nil")")
+                                        print("📊 Session Title: \(session.title ?? "nil")")
+                                        print("📊 Session isDeleted: \(session.isDeleted)")
+                                        print("📊 Session managedObjectContext: \(session.managedObjectContext != nil)")
+                                        print("📊 Session transcription length: \(session.transcription?.count ?? 0)")
+                                        print("📊 Session has analysis: \(session.analysis != nil)")
+                                        if let analysis = session.analysis {
+                                            print("📊 Analysis ID: \(analysis.id?.uuidString ?? "nil")")
+                                            print("📊 Analysis filler count: \(analysis.fillerCount)")
+                                        }
+                                        print("📊 Setting selectedSession and showing detail...")
+                                        
                                         selectedSession = session
                                         showingSessionDetail = true
+                                        
+                                        print("📊 selectedSession set: \(selectedSession?.id?.uuidString ?? "nil")")
+                                        print("📊 showingSessionDetail: \(showingSessionDetail)")
+                                        print("=== End HistoryView Session Tap ===\n")
                                     },
                                     onDelete: {
                                         sessionToDelete = session
@@ -122,11 +139,16 @@ struct HistoryView: View {
             .navigationTitle("録音履歴")
             .navigationBarTitleDisplayMode(.large)
         }
-        .sheet(isPresented: $showingSessionDetail) {
-            if let session = selectedSession {
-                SessionDetailView(session: session)
-                    .environment(\.managedObjectContext, viewContext)
-            }
+        .sheet(item: $selectedSession) { session in
+            SessionDetailView(session: session)
+                .environment(\.managedObjectContext, viewContext)
+                .onAppear {
+                    print("=== HistoryView: Sheet Presentation ===")
+                    print("📋 Sheet presented with session: \(session.id?.uuidString ?? "nil")")
+                    print("📋 Session context: \(session.managedObjectContext != nil)")
+                    print("📋 ViewContext: \(viewContext)")
+                    print("📋 SessionDetailView sheet appeared")
+                }
         }
         .alert("セッションを削除", isPresented: $showingDeleteAlert) {
             Button("削除", role: .destructive) {
@@ -137,6 +159,17 @@ struct HistoryView: View {
             Button("キャンセル", role: .cancel) { }
         } message: {
             Text("この録音セッションを完全に削除しますか？この操作は取り消せません。")
+        }
+        .onAppear {
+            print("=== HistoryView onAppear ===")
+            print("📊 Total sessions: \(audioSessions.count)")
+            print("📊 Filtered sessions: \(filteredSessions.count)")
+            for (index, session) in audioSessions.enumerated().prefix(5) {
+                print("📊 Session[\(index)]: \(session.id?.uuidString ?? "nil") - \(session.title ?? "nil")")
+                print("   - Has analysis: \(session.analysis != nil)")
+                print("   - Context: \(session.managedObjectContext != nil)")
+            }
+            print("=== End HistoryView onAppear ===\n")
         }
     }
     
@@ -474,19 +507,6 @@ struct ModernHistorySessionCard: View {
                         }
                     }
                     
-                    // 改善インジケーター
-                    if let analysis = session.analysis,
-                       let improvement = calculateImprovement(for: analysis) {
-                        HStack(spacing: DesignSystem.Spacing.sm) {
-                            TrendIndicator(direction: improvement >= 0 ? .up : .down)
-                            
-                            Text(improvement >= 0 ? "前回より\(String(format: "%.1f", improvement))%改善" : "前回より\(String(format: "%.1f", abs(improvement)))%増加")
-                                .font(DesignSystem.Typography.caption)
-                                .foregroundColor(improvement >= 0 ? DesignSystem.Colors.success : DesignSystem.Colors.error)
-                            
-                            Spacer()
-                        }
-                    }
                 }
             }
         }
@@ -500,11 +520,6 @@ struct ModernHistorySessionCard: View {
                 appeared = true
             }
         }
-    }
-    
-    private func calculateImprovement(for analysis: FillerAnalysis) -> Double? {
-        // 簡単な改善計算（実際のロジックは別で実装）
-        return Double.random(in: -10...15) // デモ用
     }
 }
 

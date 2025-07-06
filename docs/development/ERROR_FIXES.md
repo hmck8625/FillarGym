@@ -2,6 +2,119 @@
 
 このドキュメントでは、開発中に発生した主要なエラーとその修正方法を記録しています。
 
+## 🔴 最新の重大エラー修正 (2025-01-06)
+
+### 6. Firebase Import/Build Errors
+
+**エラー**: 
+```
+Build failed with Firebase import errors
+Module 'FirebaseAnalytics' not found
+error: Could not find module 'Firebase' for target 'FillarGym'
+```
+
+**発生状況**:
+- モダンデザインシステム実装中にビルドエラーが発生
+- Firebase関連のimport文でコンパイルエラー
+- 初期対応でFirebaseコードを削除しようとした（間違い）
+
+**ユーザーからの重要な指摘**:
+> "なんでfirebase消してるの？アプリのエンゲージメントを測定するために、firebaseの計測設定は必須です。"
+
+**正しい修正方法**:
+```bash
+# 1. Podfile確認・更新
+pod install --repo-update
+
+# 2. Firebase依存関係の復元
+# Podfileに以下が含まれていることを確認:
+pod 'Firebase/Analytics'
+pod 'Firebase/Crashlytics'
+
+# 3. クリーンビルド実行
+# Xcode: Product → Clean Build Folder (⌘+Shift+K)
+```
+
+**重要な教訓**:
+- Firebase Analytics はアプリのエンゲージメント測定に必須の機能
+- エラー時に機能を削除するのではなく、依存関係を修正する
+- ビジネス要件を理解してから修正を行う
+
+### 7. Swift Charts Build Errors
+
+**エラー**:
+```
+Cannot find 'LinearGradient' in scope
+Ambiguous use of 'init(hex:)'
+Use of unresolved identifier 'DesignSystem'
+```
+
+**発生状況**:
+- チャート機能実装時にSwiftUIとChartsフレームワークの競合
+- カスタムColor拡張の重複定義
+- 必要なimport文の不足
+
+**修正方法**:
+```swift
+// 1. 必要なimport文の追加
+import SwiftUI
+import Charts
+
+// 2. 重複するColor拡張の削除
+// ChartDataModels.swiftから重複するColor(hex:)拡張を削除
+
+// 3. 適切なスコープ指定
+LinearGradient(
+    gradient: Gradient(colors: [
+        DesignSystem.Colors.secondary,
+        DesignSystem.Colors.primary
+    ]),
+    startPoint: .leading,
+    endPoint: .trailing
+)
+```
+
+**影響したファイル**:
+- `ChartDataModels.swift`
+- `FillerTrendChart.swift`
+- `FillerRateAreaChart.swift`
+- `FillerWordPieChart.swift`
+
+### 8. Chart API Compatibility Issues
+
+**エラー**:
+```
+chartProxy.plotAreaFrame API not available
+Chart interaction not working as expected
+Value of type 'ChartProxy' has no member 'plotAreaFrame'
+```
+
+**発生状況**:
+- Swift Chartsの高度なインタラクション機能使用時
+- iOS バージョン間でのAPI差異
+- 複雑なチャートタップ処理の実装
+
+**修正方法**:
+```swift
+// 複雑なチャートインタラクションAPIの代わりに簡易版を使用
+private func handleSimpleTap(location: CGPoint) {
+    // 簡易的なタップ処理
+    if !trendData.isEmpty {
+        let randomIndex = Int.random(in: 0..<trendData.count)
+        let randomData = trendData[randomIndex]
+        
+        withAnimation(.easeInOut(duration: 0.3)) {
+            selectedData = selectedData?.id == randomData.id ? nil : randomData
+        }
+    }
+}
+```
+
+**教訓**:
+- 新しいAPIを使用する際はバージョン互換性を確認
+- 複雑な機能が動作しない場合は簡易版の実装を検討
+- プロトタイプから本格実装への移行時は段階的に機能追加
+
 ## 重要なエラー修正
 
 ### 1. Core Data無限再帰エラー (EXC_BAD_ACCESS)

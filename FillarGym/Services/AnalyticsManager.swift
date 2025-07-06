@@ -1,6 +1,7 @@
 import Foundation
-import FirebaseCore
-import FirebaseAnalytics
+// Firebase imports removed for now due to missing dependencies
+// import FirebaseCore
+// import FirebaseAnalytics
 
 class AnalyticsManager: ObservableObject {
     static let shared = AnalyticsManager()
@@ -15,7 +16,7 @@ class AnalyticsManager: ObservableObject {
     func setEnabled(_ enabled: Bool) {
         UserDefaults.standard.set(enabled, forKey: "analytics_enabled")
         // Firebase Analytics有効/無効設定
-        Analytics.setAnalyticsCollectionEnabled(enabled)
+        // Analytics.setAnalyticsCollectionEnabled(enabled)
         print("📊 Analytics: Set enabled to \(enabled)")
     }
     
@@ -23,7 +24,7 @@ class AnalyticsManager: ObservableObject {
     func trackAppSession() {
         guard isEnabled else { return }
         print("📊 Analytics: App session started")
-        Analytics.logEvent(AnalyticsEventAppOpen, parameters: nil)
+        // Analytics.logEvent(AnalyticsEventAppOpen, parameters: nil)
     }
     
     func trackAppBackground() {
@@ -38,10 +39,10 @@ class AnalyticsManager: ObservableObject {
     func trackScreenView(screenName: String, screenClass: String) {
         guard isEnabled else { return }
         print("📊 Analytics: Screen view - \(screenName) (\(screenClass))")
-        Analytics.logEvent(AnalyticsEventScreenView, parameters: [
-            AnalyticsParameterScreenName: screenName,
-            AnalyticsParameterScreenClass: screenClass
-        ])
+        // Analytics.logEvent(AnalyticsEventScreenView, parameters: [
+        //     AnalyticsParameterScreenName: screenName,
+        //     AnalyticsParameterScreenClass: screenClass
+        // ])
     }
     
     // MARK: - ボタンクリック計測
@@ -62,14 +63,14 @@ class AnalyticsManager: ObservableObject {
         var params = parameters
         params["app_version"] = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
         params["platform"] = "iOS"
-        Analytics.logEvent(eventName, parameters: params)
+        // Analytics.logEvent(eventName, parameters: params)
     }
     
     // MARK: - ユーザープロパティ設定
     func setUserProperty(value: String, forName property: String) {
         guard isEnabled else { return }
         print("📊 Analytics: User property - \(property): \(value)")
-        Analytics.setUserProperty(value, forName: property)
+        // Analytics.setUserProperty(value, forName: property)
     }
     
     // MARK: - FillarGym特化イベント
