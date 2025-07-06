@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		04A341688F103780B8DA1257 /* Pods_FillarGymTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CDE0B3EC5DD3D999AE7A8678 /* Pods_FillarGymTests.framework */; };
-		0A7FE4BB189DA88AFF76649A /* Pods_FillarGym_FillarGymUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3BEFDC28003521CBE052978F /* Pods_FillarGym_FillarGymUITests.framework */; };
-		2F9784EB1393DAB151C81507 /* Pods_FillarGym.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31E519D1666BBF624241F3AB /* Pods_FillarGym.framework */; };
+		1D8C383FAC08D3EB3C6F87BB /* Pods_FillarGym.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57452238CC8F3790DD115176 /* Pods_FillarGym.framework */; };
+		37716DE333DFE2D61630116E /* Pods_FillarGymTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46006935AE5CC97F15B2DD0D /* Pods_FillarGymTests.framework */; };
+		CDC038041D8865C45147145A /* Pods_FillarGym_FillarGymUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF7107EECDE46C15B14C9CE2 /* Pods_FillarGym_FillarGymUITests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,15 +33,15 @@
 		1A5431FE2E1905B900809CE1 /* FillarGym.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FillarGym.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A5432102E1905BB00809CE1 /* FillarGymTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FillarGymTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A54321A2E1905BB00809CE1 /* FillarGymUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FillarGymUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		31E519D1666BBF624241F3AB /* Pods_FillarGym.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FillarGym.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		3BEFDC28003521CBE052978F /* Pods_FillarGym_FillarGymUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FillarGym_FillarGymUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		3E918FF8F471EBA1E2965355 /* Pods-FillarGym-FillarGymUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FillarGym-FillarGymUITests.release.xcconfig"; path = "Target Support Files/Pods-FillarGym-FillarGymUITests/Pods-FillarGym-FillarGymUITests.release.xcconfig"; sourceTree = "<group>"; };
-		6AFCF74EFF75181CB468823D /* Pods-FillarGymTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FillarGymTests.release.xcconfig"; path = "Target Support Files/Pods-FillarGymTests/Pods-FillarGymTests.release.xcconfig"; sourceTree = "<group>"; };
-		8150E3AA172A1C7FA991B491 /* Pods-FillarGym.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FillarGym.release.xcconfig"; path = "Target Support Files/Pods-FillarGym/Pods-FillarGym.release.xcconfig"; sourceTree = "<group>"; };
-		CDE0B3EC5DD3D999AE7A8678 /* Pods_FillarGymTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FillarGymTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E3029331A26F94C3E77E2A5E /* Pods-FillarGymTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FillarGymTests.debug.xcconfig"; path = "Target Support Files/Pods-FillarGymTests/Pods-FillarGymTests.debug.xcconfig"; sourceTree = "<group>"; };
-		EAA41D4169FB1BC8C05AEFB4 /* Pods-FillarGym-FillarGymUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FillarGym-FillarGymUITests.debug.xcconfig"; path = "Target Support Files/Pods-FillarGym-FillarGymUITests/Pods-FillarGym-FillarGymUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		F7F2D3564DB47EF74C345871 /* Pods-FillarGym.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FillarGym.debug.xcconfig"; path = "Target Support Files/Pods-FillarGym/Pods-FillarGym.debug.xcconfig"; sourceTree = "<group>"; };
+		46006935AE5CC97F15B2DD0D /* Pods_FillarGymTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FillarGymTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		57452238CC8F3790DD115176 /* Pods_FillarGym.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FillarGym.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7CEE2E46E51C508C101B751F /* Pods-FillarGym.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FillarGym.debug.xcconfig"; path = "Target Support Files/Pods-FillarGym/Pods-FillarGym.debug.xcconfig"; sourceTree = "<group>"; };
+		845F5278CADC53CD81654412 /* Pods-FillarGymTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FillarGymTests.debug.xcconfig"; path = "Target Support Files/Pods-FillarGymTests/Pods-FillarGymTests.debug.xcconfig"; sourceTree = "<group>"; };
+		9D24B1075DEB40846E70BCAB /* Pods-FillarGymTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FillarGymTests.release.xcconfig"; path = "Target Support Files/Pods-FillarGymTests/Pods-FillarGymTests.release.xcconfig"; sourceTree = "<group>"; };
+		CF7107EECDE46C15B14C9CE2 /* Pods_FillarGym_FillarGymUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FillarGym_FillarGymUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E30094ED53EE8F089DA9B1B9 /* Pods-FillarGym.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FillarGym.release.xcconfig"; path = "Target Support Files/Pods-FillarGym/Pods-FillarGym.release.xcconfig"; sourceTree = "<group>"; };
+		E60B956368EB16DA1D3B49F6 /* Pods-FillarGym-FillarGymUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FillarGym-FillarGymUITests.release.xcconfig"; path = "Target Support Files/Pods-FillarGym-FillarGymUITests/Pods-FillarGym-FillarGymUITests.release.xcconfig"; sourceTree = "<group>"; };
+		F84D47A678165CA248C919DD /* Pods-FillarGym-FillarGymUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FillarGym-FillarGymUITests.debug.xcconfig"; path = "Target Support Files/Pods-FillarGym-FillarGymUITests/Pods-FillarGym-FillarGymUITests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -80,7 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2F9784EB1393DAB151C81507 /* Pods_FillarGym.framework in Frameworks */,
+				1D8C383FAC08D3EB3C6F87BB /* Pods_FillarGym.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,7 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04A341688F103780B8DA1257 /* Pods_FillarGymTests.framework in Frameworks */,
+				37716DE333DFE2D61630116E /* Pods_FillarGymTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -96,23 +96,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A7FE4BB189DA88AFF76649A /* Pods_FillarGym_FillarGymUITests.framework in Frameworks */,
+				CDC038041D8865C45147145A /* Pods_FillarGym_FillarGymUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		15BD6C65F0B5DF28B2291FB0 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				31E519D1666BBF624241F3AB /* Pods_FillarGym.framework */,
-				3BEFDC28003521CBE052978F /* Pods_FillarGym_FillarGymUITests.framework */,
-				CDE0B3EC5DD3D999AE7A8678 /* Pods_FillarGymTests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		1A5431F52E1905B900809CE1 = {
 			isa = PBXGroup;
 			children = (
@@ -121,7 +111,7 @@
 				1A54321D2E1905BB00809CE1 /* FillarGymUITests */,
 				1A5431FF2E1905B900809CE1 /* Products */,
 				A6F7453E0C8F742D3BD60654 /* Pods */,
-				15BD6C65F0B5DF28B2291FB0 /* Frameworks */,
+				D280D813C07E24D9A0D56EE3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -138,14 +128,24 @@
 		A6F7453E0C8F742D3BD60654 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				F7F2D3564DB47EF74C345871 /* Pods-FillarGym.debug.xcconfig */,
-				8150E3AA172A1C7FA991B491 /* Pods-FillarGym.release.xcconfig */,
-				EAA41D4169FB1BC8C05AEFB4 /* Pods-FillarGym-FillarGymUITests.debug.xcconfig */,
-				3E918FF8F471EBA1E2965355 /* Pods-FillarGym-FillarGymUITests.release.xcconfig */,
-				E3029331A26F94C3E77E2A5E /* Pods-FillarGymTests.debug.xcconfig */,
-				6AFCF74EFF75181CB468823D /* Pods-FillarGymTests.release.xcconfig */,
+				7CEE2E46E51C508C101B751F /* Pods-FillarGym.debug.xcconfig */,
+				E30094ED53EE8F089DA9B1B9 /* Pods-FillarGym.release.xcconfig */,
+				F84D47A678165CA248C919DD /* Pods-FillarGym-FillarGymUITests.debug.xcconfig */,
+				E60B956368EB16DA1D3B49F6 /* Pods-FillarGym-FillarGymUITests.release.xcconfig */,
+				845F5278CADC53CD81654412 /* Pods-FillarGymTests.debug.xcconfig */,
+				9D24B1075DEB40846E70BCAB /* Pods-FillarGymTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		D280D813C07E24D9A0D56EE3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				57452238CC8F3790DD115176 /* Pods_FillarGym.framework */,
+				CF7107EECDE46C15B14C9CE2 /* Pods_FillarGym_FillarGymUITests.framework */,
+				46006935AE5CC97F15B2DD0D /* Pods_FillarGymTests.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,11 +155,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1A5432242E1905BB00809CE1 /* Build configuration list for PBXNativeTarget "FillarGym" */;
 			buildPhases = (
-				5AC972A6B49F2E97C09564DA /* [CP] Check Pods Manifest.lock */,
+				AC5C357EAC711DAF955F5CD1 /* [CP] Check Pods Manifest.lock */,
 				1A5431FA2E1905B900809CE1 /* Sources */,
 				1A5431FB2E1905B900809CE1 /* Frameworks */,
 				1A5431FC2E1905B900809CE1 /* Resources */,
-				0DB37A88C7F5F5201C46E1E6 /* [CP] Embed Pods Frameworks */,
+				F19A53E0C38385EE5F73EB72 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -177,7 +177,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1A5432272E1905BB00809CE1 /* Build configuration list for PBXNativeTarget "FillarGymTests" */;
 			buildPhases = (
-				2E7FC1F22C123ED8DED27F39 /* [CP] Check Pods Manifest.lock */,
+				7690DDA129CBB59BD3DE2CC9 /* [CP] Check Pods Manifest.lock */,
 				1A54320C2E1905BB00809CE1 /* Sources */,
 				1A54320D2E1905BB00809CE1 /* Frameworks */,
 				1A54320E2E1905BB00809CE1 /* Resources */,
@@ -199,11 +199,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1A54322A2E1905BB00809CE1 /* Build configuration list for PBXNativeTarget "FillarGymUITests" */;
 			buildPhases = (
-				A4C154821A443490D28D261D /* [CP] Check Pods Manifest.lock */,
+				3468AE799E40BAC144E6ADB2 /* [CP] Check Pods Manifest.lock */,
 				1A5432162E1905BB00809CE1 /* Sources */,
 				1A5432172E1905BB00809CE1 /* Frameworks */,
 				1A5432182E1905BB00809CE1 /* Resources */,
-				2DB35CE4749DFC7CEDA19DE4 /* [CP] Embed Pods Frameworks */,
+				8202BAA02D3B2B4CBC1F5C6A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -287,49 +287,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0DB37A88C7F5F5201C46E1E6 /* [CP] Embed Pods Frameworks */ = {
+		3468AE799E40BAC144E6ADB2 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FillarGym/Pods-FillarGym-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
-			name = "[CP] Embed Pods Frameworks";
+			name = "[CP] Check Pods Manifest.lock";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FillarGym/Pods-FillarGym-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FillarGym-FillarGymUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FillarGym/Pods-FillarGym-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		2DB35CE4749DFC7CEDA19DE4 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FillarGym-FillarGymUITests/Pods-FillarGym-FillarGymUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FillarGym-FillarGymUITests/Pods-FillarGym-FillarGymUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FillarGym-FillarGymUITests/Pods-FillarGym-FillarGymUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		2E7FC1F22C123ED8DED27F39 /* [CP] Check Pods Manifest.lock */ = {
+		7690DDA129CBB59BD3DE2CC9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -351,7 +331,28 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5AC972A6B49F2E97C09564DA /* [CP] Check Pods Manifest.lock */ = {
+		8202BAA02D3B2B4CBC1F5C6A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FillarGym-FillarGymUITests/Pods-FillarGym-FillarGymUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FillarGym-FillarGymUITests/Pods-FillarGym-FillarGymUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FillarGym-FillarGymUITests/Pods-FillarGym-FillarGymUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AC5C357EAC711DAF955F5CD1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -373,26 +374,25 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A4C154821A443490D28D261D /* [CP] Check Pods Manifest.lock */ = {
+		F19A53E0C38385EE5F73EB72 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FillarGym/Pods-FillarGym-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
 			);
-			name = "[CP] Check Pods Manifest.lock";
+			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FillarGym/Pods-FillarGym-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-FillarGym-FillarGymUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FillarGym/Pods-FillarGym-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -558,7 +558,7 @@
 		};
 		1A5432252E1905BB00809CE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F7F2D3564DB47EF74C345871 /* Pods-FillarGym.debug.xcconfig */;
+			baseConfigurationReference = 7CEE2E46E51C508C101B751F /* Pods-FillarGym.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -591,7 +591,7 @@
 		};
 		1A5432262E1905BB00809CE1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8150E3AA172A1C7FA991B491 /* Pods-FillarGym.release.xcconfig */;
+			baseConfigurationReference = E30094ED53EE8F089DA9B1B9 /* Pods-FillarGym.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -624,7 +624,7 @@
 		};
 		1A5432282E1905BB00809CE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E3029331A26F94C3E77E2A5E /* Pods-FillarGymTests.debug.xcconfig */;
+			baseConfigurationReference = 845F5278CADC53CD81654412 /* Pods-FillarGymTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -644,7 +644,7 @@
 		};
 		1A5432292E1905BB00809CE1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6AFCF74EFF75181CB468823D /* Pods-FillarGymTests.release.xcconfig */;
+			baseConfigurationReference = 9D24B1075DEB40846E70BCAB /* Pods-FillarGymTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -664,7 +664,7 @@
 		};
 		1A54322B2E1905BB00809CE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EAA41D4169FB1BC8C05AEFB4 /* Pods-FillarGym-FillarGymUITests.debug.xcconfig */;
+			baseConfigurationReference = F84D47A678165CA248C919DD /* Pods-FillarGym-FillarGymUITests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -682,7 +682,7 @@
 		};
 		1A54322C2E1905BB00809CE1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3E918FF8F471EBA1E2965355 /* Pods-FillarGym-FillarGymUITests.release.xcconfig */;
+			baseConfigurationReference = E60B956368EB16DA1D3B49F6 /* Pods-FillarGym-FillarGymUITests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

@@ -6,5 +6,14 @@
 	<string>音声録音機能を使用して、フィラー語の分析を行います。録音データはデバイス内にのみ保存され、分析のためOpenAI APIに一時的に送信されます。</string>
 	<key>OPENAI_API_KEY_PROD</key>
 	<string>$(OPENAI_API_KEY_PROD)</string>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+	</array>
 </dict>
 </plist>

@@ -36,56 +36,161 @@ struct SettingsView: View {
     }
     
     var body: some View {
-        List {
-                // プロフィール・プラン情報
-                Section {
+        NavigationView {
+            ScrollView {
+                LazyVStack(spacing: DesignSystem.Spacing.lg) {
+                    // プロフィール・プラン情報
+                    profileSection
+                    
+                    // 目標設定
+                    goalSection
+                    
+                    // API設定
+                    apiSection
+                    
+                    // フィラー語設定
+                    fillerWordsSection
+                    
+                    // 通知設定
+                    notificationSection
+                    
+                    // データ管理
+                    dataManagementSection
+                    
+                    // ヘルプ・サポート
+                    helpSupportSection
+                    
+                    // アプリ情報
+                    appInfoSection
+                }
+                .padding(.horizontal, DesignSystem.Spacing.md)
+                .padding(.vertical, DesignSystem.Spacing.sm)
+            }
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        DesignSystem.Colors.background,
+                        DesignSystem.Colors.surfaceElevated.opacity(0.3)
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
+            .navigationTitle("設定")
+            .navigationBarTitleDisplayMode(.large)
+        }
+        .sheet(isPresented: $showingPremiumSheet) {
+            ModernPremiumUpgradeView()
+        }
+    }
+    
+    // MARK: - Section Views
+    private var profileSection: some View {
+        ModernCard(elevation: .medium, padding: DesignSystem.Spacing.lg) {
+            HStack(spacing: DesignSystem.Spacing.md) {
+                Image(systemName: "person.circle.fill")
+                    .font(.system(size: DesignSystem.IconSize.extraLarge, weight: .semibold))
+                    .foregroundColor(DesignSystem.Colors.primary)
+                
+                VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
+                    Text("FillarGym")
+                        .font(DesignSystem.Typography.title2)
+                        .foregroundColor(DesignSystem.Colors.textPrimary)
+                    
+                    StatusBadge(
+                        text: settings.isPremium ? "Premium会員" : "Free会員",
+                        status: settings.isPremium ? .warning : .neutral
+                    )
+                }
+                
+                Spacer()
+                
+                if !settings.isPremium {
+                    PillButton(
+                        title: "アップグレード",
+                        icon: "star.fill",
+                        size: .medium,
+                        variant: .primary
+                    ) {
+                        showingPremiumSheet = true
+                    }
+                }
+            }
+        }
+        .pressAnimation()
+    }
+    
+    private var goalSection: some View {
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.md) {
+            sectionHeader("目標設定", icon: "target")
+            
+            ModernCard(elevation: .low, padding: DesignSystem.Spacing.lg) {
+                VStack(spacing: DesignSystem.Spacing.lg) {
                     HStack {
-                        VStack(alignment: .leading) {
-                            Text("FillarGym")
-                                .font(.headline)
-                            Text(settings.isPremium ? "Premium会員" : "Free会員")
-                                .font(.caption)
-                                .foregroundColor(settings.isPremium ? .orange : .gray)
+                        VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
+                            Text("月間目標録音数")
+                                .font(DesignSystem.Typography.bodyBold)
+                                .foregroundColor(DesignSystem.Colors.textPrimary)
+                            
+                            Text("毎月の録音目標を設定")
+                                .font(DesignSystem.Typography.caption)
+                                .foregroundColor(DesignSystem.Colors.textSecondary)
                         }
                         
                         Spacer()
                         
-                        if !settings.isPremium {
-                            Button("アップグレード") {
-                                showingPremiumSheet = true
-                            }
-                            .buttonStyle(.borderedProminent)
-                        }
-                    }
-                }
-                
-                // 目標設定
-                Section("目標設定") {
-                    HStack {
-                        Text("月間目標録音数")
-                        Spacer()
-                        Stepper("\(settings.monthlyGoal)回", value: Binding(
-                            get: { Int(settings.monthlyGoal) },
-                            set: { settings.monthlyGoal = Int16($0); saveSettings() }
-                        ), in: 1...100)
-                    }
-                }
-                
-                // API設定
-                Section("API設定") {
-                    NavigationLink("OpenAI APIキー") {
-                        APIKeySettingsView()
-                    }
-                }
-                
-                // フィラー語設定
-                Section("フィラー語設定") {
-                    NavigationLink("検出するフィラー語") {
-                        FillerWordsSettingsView(settings: settings)
+                        Text("\(settings.monthlyGoal)回")
+                            .font(DesignSystem.Typography.numberMedium)
+                            .foregroundColor(DesignSystem.Colors.primary)
                     }
                     
-                    VStack(alignment: .leading) {
+                    Stepper("", value: Binding(
+                        get: { Int(settings.monthlyGoal) },
+                        set: { settings.monthlyGoal = Int16($0); saveSettings() }
+                    ), in: 1...100)
+                    .labelsHidden()
+                }
+            }
+        }
+    }
+    
+    private var apiSection: some View {
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.md) {
+            sectionHeader("API設定", icon: "key")
+            
+            NavigationLink(destination: APIKeySettingsView()) {
+                ModernSettingsRow(
+                    title: "OpenAI APIキー",
+                    subtitle: "音声分析のためのAPIキー設定",
+                    icon: "key.fill",
+                    iconColor: DesignSystem.Colors.warning
+                )
+            }
+            .buttonStyle(.plain)
+        }
+    }
+    
+    private var fillerWordsSection: some View {
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.md) {
+            sectionHeader("フィラー語設定", icon: "waveform")
+            
+            VStack(spacing: DesignSystem.Spacing.md) {
+                NavigationLink(destination: FillerWordsSettingsView(settings: settings)) {
+                    ModernSettingsRow(
+                        title: "検出するフィラー語",
+                        subtitle: "カスタムフィラー語の管理",
+                        icon: "text.bubble",
+                        iconColor: DesignSystem.Colors.accent
+                    )
+                }
+                .buttonStyle(.plain)
+                
+                ModernCard(elevation: .low, padding: DesignSystem.Spacing.lg) {
+                    VStack(alignment: .leading, spacing: DesignSystem.Spacing.md) {
                         Text("検出感度")
+                            .font(DesignSystem.Typography.bodyBold)
+                            .foregroundColor(DesignSystem.Colors.textPrimary)
+                        
                         Picker("検出感度", selection: Binding(
                             get: { Int(settings.detectionSensitivity) },
                             set: { settings.detectionSensitivity = Int16($0); saveSettings() }
@@ -96,70 +201,174 @@ struct SettingsView: View {
                         }
                         .pickerStyle(SegmentedPickerStyle())
                     }
-                    
-                    Picker("言語", selection: Binding(
-                        get: { settings.language ?? "ja" },
-                        set: { settings.language = $0; saveSettings() }
-                    )) {
-                        Text("日本語").tag("ja")
-                        Text("English").tag("en")
-                    }
                 }
                 
-                // 通知設定
-                Section("通知") {
-                    Toggle("練習リマインダー", isOn: Binding(
+                ModernCard(elevation: .low, padding: DesignSystem.Spacing.lg) {
+                    VStack(alignment: .leading, spacing: DesignSystem.Spacing.md) {
+                        Text("言語設定")
+                            .font(DesignSystem.Typography.bodyBold)
+                            .foregroundColor(DesignSystem.Colors.textPrimary)
+                        
+                        Picker("言語", selection: Binding(
+                            get: { settings.language ?? "ja" },
+                            set: { settings.language = $0; saveSettings() }
+                        )) {
+                            Text("日本語").tag("ja")
+                            Text("English").tag("en")
+                        }
+                        .pickerStyle(SegmentedPickerStyle())
+                    }
+                }
+            }
+        }
+    }
+    
+    private var notificationSection: some View {
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.md) {
+            sectionHeader("通知設定", icon: "bell")
+            
+            ModernCard(elevation: .low, padding: DesignSystem.Spacing.lg) {
+                HStack {
+                    VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
+                        Text("練習リマインダー")
+                            .font(DesignSystem.Typography.bodyBold)
+                            .foregroundColor(DesignSystem.Colors.textPrimary)
+                        
+                        Text("定期的な練習を促すリマインダー")
+                            .font(DesignSystem.Typography.caption)
+                            .foregroundColor(DesignSystem.Colors.textSecondary)
+                    }
+                    
+                    Spacer()
+                    
+                    Toggle("", isOn: Binding(
                         get: { settings.notificationEnabled },
                         set: { settings.notificationEnabled = $0; saveSettings() }
                     ))
+                    .labelsHidden()
                 }
+            }
+        }
+    }
+    
+    private var dataManagementSection: some View {
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.md) {
+            sectionHeader("データ管理", icon: "externaldrive")
+            
+            VStack(spacing: DesignSystem.Spacing.md) {
+                NavigationLink(destination: DataManagementView()) {
+                    ModernSettingsRow(
+                        title: "録音データ管理",
+                        subtitle: "保存された録音データの管理",
+                        icon: "folder",
+                        iconColor: DesignSystem.Colors.secondary
+                    )
+                }
+                .buttonStyle(.plain)
                 
-                // データ管理
-                Section("データ管理") {
-                    NavigationLink("録音データ管理") {
-                        DataManagementView()
-                    }
-                    
-                    if settings.isPremium {
-                        Button("データをエクスポート") {
+                if settings.isPremium {
+                    ModernCard(elevation: .low, padding: DesignSystem.Spacing.lg) {
+                        PillButton(
+                            title: "データをエクスポート",
+                            icon: "square.and.arrow.up",
+                            size: .medium,
+                            variant: .outline
+                        ) {
                             // エクスポート機能
                         }
                     }
                 }
-                
-                // ヘルプ・サポート
-                Section("ヘルプ・サポート") {
-                    NavigationLink("使い方ガイド") {
-                        HelpView()
-                    }
-                    
-                    NavigationLink("お問い合わせ") {
-                        ContactView()
-                    }
-                    
-                    NavigationLink("プライバシーポリシー") {
-                        PrivacyPolicyView()
-                    }
-                    
-                    NavigationLink("利用規約") {
-                        TermsOfServiceView()
-                    }
+            }
+        }
+    }
+    
+    private var helpSupportSection: some View {
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.md) {
+            sectionHeader("ヘルプ・サポート", icon: "questionmark.circle")
+            
+            VStack(spacing: DesignSystem.Spacing.sm) {
+                NavigationLink(destination: ModernHelpView()) {
+                    ModernSettingsRow(
+                        title: "使い方ガイド",
+                        subtitle: "アプリの基本的な使い方",
+                        icon: "book",
+                        iconColor: DesignSystem.Colors.primary
+                    )
                 }
+                .buttonStyle(.plain)
                 
-                // アプリ情報
-                Section("アプリ情報") {
-                    HStack {
+                NavigationLink(destination: ContactView()) {
+                    ModernSettingsRow(
+                        title: "お問い合わせ",
+                        subtitle: "サポートへのお問い合わせ",
+                        icon: "envelope",
+                        iconColor: DesignSystem.Colors.info
+                    )
+                }
+                .buttonStyle(.plain)
+                
+                NavigationLink(destination: PrivacyPolicyView()) {
+                    ModernSettingsRow(
+                        title: "プライバシーポリシー",
+                        subtitle: "個人情報の取り扱いについて",
+                        icon: "hand.raised",
+                        iconColor: DesignSystem.Colors.success
+                    )
+                }
+                .buttonStyle(.plain)
+                
+                NavigationLink(destination: TermsOfServiceView()) {
+                    ModernSettingsRow(
+                        title: "利用規約",
+                        subtitle: "サービス利用の規約",
+                        icon: "doc.text",
+                        iconColor: DesignSystem.Colors.textSecondary
+                    )
+                }
+                .buttonStyle(.plain)
+            }
+        }
+    }
+    
+    private var appInfoSection: some View {
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.md) {
+            sectionHeader("アプリ情報", icon: "info.circle")
+            
+            ModernCard(elevation: .low, padding: DesignSystem.Spacing.lg) {
+                HStack {
+                    VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
                         Text("バージョン")
-                        Spacer()
-                        Text("1.0.0")
-                            .foregroundColor(.gray)
+                            .font(DesignSystem.Typography.bodyBold)
+                            .foregroundColor(DesignSystem.Colors.textPrimary)
+                        
+                        Text("現在のアプリバージョン")
+                            .font(DesignSystem.Typography.caption)
+                            .foregroundColor(DesignSystem.Colors.textSecondary)
                     }
+                    
+                    Spacer()
+                    
+                    Text("1.0.0")
+                        .font(DesignSystem.Typography.numberMedium)
+                        .foregroundColor(DesignSystem.Colors.textTertiary)
                 }
+            }
         }
-        .navigationTitle("設定")
-        .sheet(isPresented: $showingPremiumSheet) {
-            PremiumUpgradeView()
+    }
+    
+    private func sectionHeader(_ title: String, icon: String) -> some View {
+        HStack(spacing: DesignSystem.Spacing.sm) {
+            Image(systemName: icon)
+                .font(.system(size: DesignSystem.IconSize.medium, weight: .semibold))
+                .foregroundColor(DesignSystem.Colors.primary)
+            
+            Text(title)
+                .font(DesignSystem.Typography.headline)
+                .foregroundColor(DesignSystem.Colors.textPrimary)
+            
+            Spacer()
         }
+        .padding(.horizontal, DesignSystem.Spacing.xs)
     }
     
     private func saveSettings() {
@@ -175,13 +384,14 @@ struct SettingsView: View {
 
 // これらのビューは別ファイルで実装済み
 
-struct HelpView: View {
+struct ModernHelpView: View {
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                HelpSection(
+            LazyVStack(spacing: DesignSystem.Spacing.xl) {
+                ModernHelpSection(
                     title: "基本的な使い方",
                     icon: "mic.circle.fill",
+                    iconColor: DesignSystem.Colors.primary,
                     steps: [
                         "ホーム画面で「録音開始」ボタンをタップ",
                         "話したい内容を1-10分程度録音",
@@ -190,9 +400,10 @@ struct HelpView: View {
                     ]
                 )
                 
-                HelpSection(
+                ModernHelpSection(
                     title: "分析結果の見方",
                     icon: "chart.bar.fill",
+                    iconColor: DesignSystem.Colors.info,
                     steps: [
                         "フィラー語数: 「えー」「あー」などの総数",
                         "フィラー率: 1分あたりのフィラー語数",
@@ -201,9 +412,10 @@ struct HelpView: View {
                     ]
                 )
                 
-                HelpSection(
+                ModernHelpSection(
                     title: "上達のコツ",
                     icon: "lightbulb.fill",
+                    iconColor: DesignSystem.Colors.warning,
                     steps: [
                         "週に3回程度の定期的な練習",
                         "話す内容を事前に整理する",
@@ -212,9 +424,10 @@ struct HelpView: View {
                     ]
                 )
                 
-                HelpSection(
+                ModernHelpSection(
                     title: "Premium機能",
                     icon: "star.fill",
+                    iconColor: DesignSystem.Colors.accent,
                     steps: [
                         "月間分析回数無制限",
                         "詳細な統計レポート",
@@ -223,44 +436,67 @@ struct HelpView: View {
                     ]
                 )
             }
-            .padding()
+            .padding(.horizontal, DesignSystem.Spacing.md)
+            .padding(.vertical, DesignSystem.Spacing.sm)
         }
+        .background(
+            LinearGradient(
+                gradient: Gradient(colors: [
+                    DesignSystem.Colors.background,
+                    DesignSystem.Colors.surfaceElevated.opacity(0.2)
+                ]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        )
         .navigationTitle("使い方ガイド")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
 
-struct HelpSection: View {
+struct ModernHelpSection: View {
     let title: String
     let icon: String
+    let iconColor: Color
     let steps: [String]
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Image(systemName: icon)
-                    .font(.title2)
-                    .foregroundColor(.blue)
-                Text(title)
-                    .font(.headline)
-            }
-            
-            VStack(alignment: .leading, spacing: 8) {
-                ForEach(Array(steps.enumerated()), id: \.offset) { index, step in
-                    HStack(alignment: .top) {
-                        Text("\(index + 1).")
-                            .fontWeight(.medium)
-                            .foregroundColor(.blue)
-                            .frame(width: 20, alignment: .leading)
-                        Text(step)
-                            .fixedSize(horizontal: false, vertical: true)
+        ModernCard(elevation: .medium, padding: DesignSystem.Spacing.lg) {
+            VStack(alignment: .leading, spacing: DesignSystem.Spacing.lg) {
+                HStack(spacing: DesignSystem.Spacing.md) {
+                    Image(systemName: icon)
+                        .font(.system(size: DesignSystem.IconSize.large, weight: .semibold))
+                        .foregroundColor(iconColor)
+                    
+                    Text(title)
+                        .font(DesignSystem.Typography.title2)
+                        .foregroundColor(DesignSystem.Colors.textPrimary)
+                    
+                    Spacer()
+                }
+                
+                VStack(alignment: .leading, spacing: DesignSystem.Spacing.md) {
+                    ForEach(Array(steps.enumerated()), id: \.offset) { index, step in
+                        HStack(alignment: .top, spacing: DesignSystem.Spacing.md) {
+                            Text("\(index + 1)")
+                                .font(DesignSystem.Typography.caption)
+                                .fontWeight(.bold)
+                                .foregroundColor(iconColor)
+                                .frame(width: 20, height: 20)
+                                .background(iconColor.opacity(0.1))
+                                .cornerRadius(DesignSystem.CornerRadius.pill)
+                                .frame(width: 20, alignment: .center)
+                            
+                            Text(step)
+                                .font(DesignSystem.Typography.body)
+                                .foregroundColor(DesignSystem.Colors.textSecondary)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
                     }
                 }
             }
         }
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(12)
+        .pressAnimation()
     }
 }
 
@@ -285,44 +521,102 @@ struct TermsOfServiceView: View {
     }
 }
 
-struct PremiumUpgradeView: View {
+struct ModernPremiumUpgradeView: View {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 30) {
-                Text("Premium機能")
-                    .font(.title)
-                    .fontWeight(.bold)
-                
-                VStack(alignment: .leading, spacing: 15) {
-                    PremiumFeatureRow(icon: "infinity", title: "無制限分析", description: "月の分析回数制限なし")
-                    PremiumFeatureRow(icon: "chart.bar.doc.horizontal", title: "詳細レポート", description: "高度な統計と分析")
-                    PremiumFeatureRow(icon: "icloud.and.arrow.down", title: "データエクスポート", description: "PDF・CSV形式で出力")
-                    PremiumFeatureRow(icon: "bell.badge", title: "優先サポート", description: "専用サポート窓口")
-                }
-                .padding()
-                
-                VStack(spacing: 15) {
-                    Text("¥480/月")
-                        .font(.title)
-                        .fontWeight(.bold)
-                    
-                    Button("Premiumにアップグレード") {
-                        // 課金処理
+            ScrollView {
+                LazyVStack(spacing: DesignSystem.Spacing.xl) {
+                    // ヘッダー
+                    VStack(spacing: DesignSystem.Spacing.lg) {
+                        Image(systemName: "star.fill")
+                            .font(.system(size: 60, weight: .semibold))
+                            .foregroundColor(DesignSystem.Colors.accent)
+                        
+                        VStack(spacing: DesignSystem.Spacing.sm) {
+                            Text("Premium機能")
+                                .font(DesignSystem.Typography.title2)
+                                .foregroundColor(DesignSystem.Colors.textPrimary)
+                            
+                            Text("話し方改善をもっと効果的に")
+                                .font(DesignSystem.Typography.body)
+                                .foregroundColor(DesignSystem.Colors.textSecondary)
+                        }
                     }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
+                    .padding(.top, DesignSystem.Spacing.xl)
                     
-                    Button("購入を復元") {
-                        // 復元処理
+                    // 機能一覧
+                    VStack(spacing: DesignSystem.Spacing.md) {
+                        ModernPremiumFeatureRow(
+                            icon: "infinity",
+                            title: "無制限分析",
+                            description: "月の分析回数制限なし",
+                            iconColor: DesignSystem.Colors.primary
+                        )
+                        
+                        ModernPremiumFeatureRow(
+                            icon: "chart.bar.doc.horizontal",
+                            title: "詳細レポート",
+                            description: "高度な統計と分析",
+                            iconColor: DesignSystem.Colors.info
+                        )
+                        
+                        ModernPremiumFeatureRow(
+                            icon: "icloud.and.arrow.down",
+                            title: "データエクスポート",
+                            description: "PDF・CSV形式で出力",
+                            iconColor: DesignSystem.Colors.success
+                        )
+                        
+                        ModernPremiumFeatureRow(
+                            icon: "bell.badge",
+                            title: "優先サポート",
+                            description: "専用サポート窓口",
+                            iconColor: DesignSystem.Colors.warning
+                        )
                     }
-                    .foregroundColor(.blue)
+                    
+                    // 価格・購入
+                    ModernCard(elevation: .high, padding: DesignSystem.Spacing.xl) {
+                        VStack(spacing: DesignSystem.Spacing.lg) {
+                            Text("¥480/月")
+                                .font(DesignSystem.Typography.numberLarge.weight(.bold))
+                                .foregroundColor(DesignSystem.Colors.accent)
+                            
+                            PillButton(
+                                title: "Premiumにアップグレード",
+                                icon: "star.fill",
+                                size: .large,
+                                variant: .primary
+                            ) {
+                                // 課金処理
+                            }
+                            
+                            PillButton(
+                                title: "購入を復元",
+                                icon: "arrow.clockwise",
+                                size: .medium,
+                                variant: .ghost
+                            ) {
+                                // 復元処理
+                            }
+                        }
+                    }
                 }
-                .padding()
-                
-                Spacer()
+                .padding(.horizontal, DesignSystem.Spacing.md)
+                .padding(.bottom, DesignSystem.Spacing.xl)
             }
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        DesignSystem.Colors.background,
+                        DesignSystem.Colors.surfaceElevated.opacity(0.2)
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
             .navigationTitle("Premium")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -330,33 +624,84 @@ struct PremiumUpgradeView: View {
                     Button("閉じる") {
                         dismiss()
                     }
+                    .foregroundColor(DesignSystem.Colors.primary)
                 }
             }
         }
     }
 }
 
-struct PremiumFeatureRow: View {
+struct ModernPremiumFeatureRow: View {
     let icon: String
     let title: String
     let description: String
+    let iconColor: Color
     
     var body: some View {
-        HStack(spacing: 15) {
-            Image(systemName: icon)
-                .font(.title2)
-                .foregroundColor(.blue)
-                .frame(width: 30)
-            
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .font(.headline)
-                Text(description)
-                    .font(.caption)
-                    .foregroundColor(.gray)
+        ModernCard(elevation: .low, padding: DesignSystem.Spacing.lg) {
+            HStack(spacing: DesignSystem.Spacing.md) {
+                Image(systemName: icon)
+                    .font(.system(size: DesignSystem.IconSize.large, weight: .semibold))
+                    .foregroundColor(iconColor)
+                    .frame(width: DesignSystem.IconSize.extraLarge, height: DesignSystem.IconSize.extraLarge)
+                    .background(iconColor.opacity(0.1))
+                    .cornerRadius(DesignSystem.CornerRadius.medium)
+                
+                VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
+                    Text(title)
+                        .font(DesignSystem.Typography.bodyBold)
+                        .foregroundColor(DesignSystem.Colors.textPrimary)
+                    
+                    Text(description)
+                        .font(DesignSystem.Typography.body)
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
+                }
+                
+                Spacer()
+                
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: DesignSystem.IconSize.medium, weight: .semibold))
+                    .foregroundColor(DesignSystem.Colors.success)
             }
-            
-            Spacer()
         }
+        .pressAnimation()
+    }
+}
+
+// MARK: - Modern Settings Row
+struct ModernSettingsRow: View {
+    let title: String
+    let subtitle: String
+    let icon: String
+    let iconColor: Color
+    
+    var body: some View {
+        ModernCard(elevation: .low, padding: DesignSystem.Spacing.lg) {
+            HStack(spacing: DesignSystem.Spacing.md) {
+                Image(systemName: icon)
+                    .font(.system(size: DesignSystem.IconSize.medium, weight: .semibold))
+                    .foregroundColor(iconColor)
+                    .frame(width: DesignSystem.IconSize.large, height: DesignSystem.IconSize.large)
+                    .background(iconColor.opacity(0.1))
+                    .cornerRadius(DesignSystem.CornerRadius.small)
+                
+                VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
+                    Text(title)
+                        .font(DesignSystem.Typography.bodyBold)
+                        .foregroundColor(DesignSystem.Colors.textPrimary)
+                    
+                    Text(subtitle)
+                        .font(DesignSystem.Typography.caption)
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
+                }
+                
+                Spacer()
+                
+                Image(systemName: "chevron.right")
+                    .font(.system(size: DesignSystem.IconSize.small, weight: .medium))
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+            }
+        }
+        .pressAnimation()
     }
 }

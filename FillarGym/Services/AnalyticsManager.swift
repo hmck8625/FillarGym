@@ -1,6 +1,4 @@
 import Foundation
-
-// Firebase Analytics - 完全版
 import FirebaseCore
 import FirebaseAnalytics
 
@@ -18,6 +16,7 @@ class AnalyticsManager: ObservableObject {
         UserDefaults.standard.set(enabled, forKey: "analytics_enabled")
         // Firebase Analytics有効/無効設定
         Analytics.setAnalyticsCollectionEnabled(enabled)
+        print("📊 Analytics: Set enabled to \(enabled)")
     }
     
     // MARK: - DAU/MAU 計測

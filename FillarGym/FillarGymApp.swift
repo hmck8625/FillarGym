@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-
-// Firebase
 import FirebaseCore
 
 @main
@@ -25,25 +23,14 @@ struct FillarGymApp: App {
 
     var body: some Scene {
         WindowGroup {
-            if hasCompletedOnboarding {
-                ContentView()
-                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                    .onAppear {
-                        AnalyticsManager.shared.startSession()
-                    }
-                    .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
-                        AnalyticsManager.shared.trackAppBackground()
-                    }
-            } else {
-                OnboardingView()
-                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
-                    .onAppear {
-                        AnalyticsManager.shared.trackScreenView(
-                            screenName: "onboarding_view",
-                            screenClass: "OnboardingView"
-                        )
-                    }
-            }
+            ContentView()
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .onAppear {
+                    AnalyticsManager.shared.startSession()
+                }
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
+                    AnalyticsManager.shared.trackAppBackground()
+                }
         }
     }
     

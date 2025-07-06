@@ -14,7 +14,7 @@ class AudioRecorderManager: NSObject, ObservableObject {
     private var recordingTimer: Timer?
     private var levelTimer: Timer?
     
-    private let maxRecordingDuration: TimeInterval = 600 // 10分
+    let maxRecordingDuration: TimeInterval = 600 // 10分
     
     override init() {
         super.init()
@@ -172,6 +172,11 @@ class AudioRecorderManager: NSObject, ObservableObject {
     
     var remainingTime: TimeInterval {
         return maxRecordingDuration - recordingDuration
+    }
+    
+    var recordingProgress: Double {
+        guard maxRecordingDuration > 0 else { return 0.0 }
+        return min(recordingDuration / maxRecordingDuration, 1.0)
     }
     
     func formatTime(_ time: TimeInterval) -> String {

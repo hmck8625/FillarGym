@@ -15,90 +15,40 @@ struct HomeView: View {
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 20) {
-                // 録音開始ボタン
-                Button(action: {
-                    showingRecordingView = true
-                }) {
-                    VStack {
-                        Image(systemName: "mic.circle.fill")
-                            .font(.system(size: 60))
-                            .foregroundColor(.white)
-                        Text("録音開始")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                    }
-                    .frame(width: 200, height: 120)
-                    .background(
-                        LinearGradient(gradient: Gradient(colors: [.blue, .purple]), startPoint: .topLeading, endPoint: .bottomTrailing)
-                    )
-                    .cornerRadius(20)
-                    .shadow(radius: 10)
-                }
-                
-                // 進捗サマリー
-                VStack(alignment: .leading, spacing: 10) {
-                    HStack {
-                        Text("今週の進捗")
-                            .font(.headline)
-                        Spacer()
-                        Text(progressTracker?.checkGoalAchievement().description ?? "読み込み中...")
-                            .font(.caption)
-                            .foregroundColor(.blue)
-                    }
-                    .padding(.horizontal)
+            ScrollView {
+                LazyVStack(spacing: DesignSystem.Spacing.lg) {
+                    // Header Section
+                    headerSection
                     
-                    HStack {
-                        ProgressCard(
-                            title: "録音回数", 
-                            value: "\(progressTracker?.weeklyProgress?.sessionsCount ?? 0)", 
-                            icon: "mic"
-                        )
-                        ProgressCard(
-                            title: "連続日数", 
-                            value: "\(progressTracker?.streakDays ?? 0)日", 
-                            icon: "flame"
-                        )
-                    }
-                    .padding(.horizontal)
+                    // Main Recording Button
+                    mainRecordingButton
                     
-                    HStack {
-                        ProgressCard(
-                            title: "週平均フィラー", 
-                            value: "\(String(format: "%.1f", progressTracker?.weeklyProgress?.averageFillerRate ?? 0))/分", 
-                            icon: "chart.line.downtrend.xyaxis"
-                        )
-                        ProgressCard(
-                            title: "改善率", 
-                            value: "\(String(format: "%.1f", progressTracker?.averageImprovement ?? 0))%", 
-                            icon: (progressTracker?.averageImprovement ?? 0) >= 0 ? "arrow.up" : "arrow.down"
-                        )
-                    }
-                    .padding(.horizontal)
-                }
-                
-                // 最近の録音履歴
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("最近の録音")
-                        .font(.headline)
-                        .padding(.horizontal)
+                    // Progress Summary Cards
+                    progressSummarySection
                     
-                    if recentSessions.isEmpty {
-                        Text("まだ録音がありません")
-                            .foregroundColor(.gray)
-                            .padding()
-                    } else {
-                        ForEach(recentSessions.prefix(3), id: \.id) { session in
-                            RecentSessionRow(session: session)
-                        }
-                        .padding(.horizontal)
-                    }
+                    // Recent Sessions
+                    recentSessionsSection
                 }
-                
-                Spacer()
+                .padding(.horizontal, DesignSystem.Spacing.md)
+                .padding(.top, DesignSystem.Spacing.sm)
             }
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        DesignSystem.Colors.background,
+                        DesignSystem.Colors.surfaceElevated.opacity(0.3)
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
+            .navigationBarTitleDisplayMode(.large)
             .navigationTitle("FillarGym")
+            .toolbarBackground(
+                DesignSystem.Colors.surface.opacity(0.9),
+                for: .navigationBar
+            )
+            .toolbarBackgroundVisibility(.visible, for: .navigationBar)
         }
         .sheet(isPresented: $showingRecordingView) {
             RecordingView()
@@ -113,60 +63,386 @@ struct HomeView: View {
             progressTracker?.calculateProgress()
         }
     }
-}
-
-struct ProgressCard: View {
-    let title: String
-    let value: String
-    let icon: String
     
-    var body: some View {
-        VStack {
-            Image(systemName: icon)
-                .font(.title)
-                .foregroundColor(.blue)
-            Text(value)
-                .font(.title2)
-                .fontWeight(.bold)
-            Text(title)
-                .font(.caption)
-                .foregroundColor(.gray)
-        }
-        .frame(maxWidth: .infinity)
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(10)
-    }
-}
-
-struct RecentSessionRow: View {
-    let session: AudioSession
-    
-    var body: some View {
+    // MARK: - Header Section
+    private var headerSection: some View {
         HStack {
-            VStack(alignment: .leading) {
-                Text(session.title ?? "録音セッション")
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-                Text(session.createdAt?.formatted(date: .abbreviated, time: .shortened) ?? "")
-                    .font(.caption)
-                    .foregroundColor(.gray)
+            VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
+                Text("おかえりなさい！")
+                    .font(DesignSystem.Typography.title2)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                
+                Text("今日も話し方の改善を始めましょう")
+                    .font(DesignSystem.Typography.body)
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
             }
             
             Spacer()
             
-            VStack(alignment: .trailing) {
-                Text("\(Int(session.duration))秒")
-                    .font(.caption)
-                if let analysis = session.analysis {
-                    Text("\(analysis.fillerCount)個")
-                        .font(.caption)
-                        .foregroundColor(.red)
+            // Achievement badge if goals met
+            if let tracker = progressTracker {
+                let goalStatus = tracker.checkGoalAchievement()
+                switch goalStatus {
+                case .noGoal:
+                    EmptyView()
+                case .achieved:
+                    StatusBadge(
+                        text: goalStatus.description,
+                        status: .success
+                    )
+                case .inProgress(_):
+                    StatusBadge(
+                        text: goalStatus.description,
+                        status: .info
+                    )
                 }
             }
         }
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(8)
+        .padding(.horizontal, DesignSystem.Spacing.xs)
+    }
+    
+    // MARK: - Main Recording Button
+    private var mainRecordingButton: some View {
+        Button(action: {
+            showingRecordingView = true
+        }) {
+            VStack(spacing: DesignSystem.Spacing.xl) {
+                // 上部に適切なスペースを追加
+                Spacer()
+                    .frame(height: DesignSystem.Spacing.lg)
+                
+                // Premium Icon with Glow Effect - 中央寄せ
+                ZStack {
+                    Circle()
+                        .fill(
+                            LinearGradient(
+                                gradient: Gradient(colors: [
+                                    DesignSystem.Colors.secondary.opacity(0.3),
+                                    DesignSystem.Colors.primary.opacity(0.1)
+                                ]),
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                        .frame(width: 96, height: 96)
+                    
+                    Image(systemName: "waveform.circle.fill")
+                        .font(.system(size: 56, weight: .medium))
+                        .foregroundStyle(
+                            LinearGradient(
+                                gradient: Gradient(colors: [
+                                    DesignSystem.Colors.secondary,
+                                    DesignSystem.Colors.primary
+                                ]),
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
+                }
+                
+                VStack(spacing: DesignSystem.Spacing.md) {
+                    Text("録音を開始")
+                        .font(DesignSystem.Typography.title1)
+                        .fontWeight(.bold)
+                        .foregroundColor(DesignSystem.Colors.textPrimary)
+                    
+                    Text("プロフェッショナルな話し方の分析を始めましょう")
+                        .font(DesignSystem.Typography.body)
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
+                        .multilineTextAlignment(.center)
+                        .lineLimit(2)
+                }
+                
+                // Premium Gradient Button
+                Text("録音開始")
+                    .font(DesignSystem.Typography.bodyBold)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: DesignSystem.ButtonSize.large)
+                    .background(
+                        LinearGradient(
+                            gradient: Gradient(colors: [
+                                DesignSystem.Colors.secondary,
+                                DesignSystem.Colors.primary
+                            ]),
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .cornerRadius(DesignSystem.CornerRadius.pill)
+                    .shadow(
+                        color: DesignSystem.Colors.shadowMedium,
+                        radius: 8,
+                        x: 0,
+                        y: 4
+                    )
+                
+                // 下部に適切なスペースを追加してバランスを整える
+                Spacer()
+                    .frame(height: DesignSystem.Spacing.md)
+            }
+        }
+        .buttonStyle(.plain)
+        .pressAnimation()
+        .background(
+            ModernCard(elevation: .high, isPremium: true) {
+                Color.clear
+            }
+        )
+    }
+    
+    // MARK: - Progress Summary Section
+    private var progressSummarySection: some View {
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.md) {
+            HStack {
+                Text("今週の進捗")
+                    .font(DesignSystem.Typography.headline)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                
+                Spacer()
+            }
+            .padding(.horizontal, DesignSystem.Spacing.xs)
+            
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: DesignSystem.Spacing.md), count: 2), spacing: DesignSystem.Spacing.md) {
+                ModernMetricCard(
+                    title: "録音回数",
+                    value: "\(progressTracker?.weeklyProgress?.sessionsCount ?? 0)",
+                    subtitle: "今週",
+                    color: DesignSystem.Colors.primary,
+                    icon: "mic.fill"
+                )
+                
+                ModernMetricCard(
+                    title: "連続日数",
+                    value: "\(progressTracker?.streakDays ?? 0)",
+                    subtitle: "日間",
+                    color: DesignSystem.Colors.secondary,
+                    icon: "flame.fill",
+                    trend: getTrend(for: progressTracker?.streakDays ?? 0)
+                )
+                
+                ModernMetricCard(
+                    title: "平均フィラー率",
+                    value: String(format: "%.1f", progressTracker?.weeklyProgress?.averageFillerRate ?? 0),
+                    subtitle: "回/分",
+                    color: DesignSystem.Colors.accent,
+                    icon: "chart.line.downtrend.xyaxis"
+                )
+                
+                ModernMetricCard(
+                    title: "改善率",
+                    value: "\(String(format: "%.1f", progressTracker?.averageImprovement ?? 0))%",
+                    subtitle: "前週比",
+                    color: (progressTracker?.averageImprovement ?? 0) >= 0 ? DesignSystem.Colors.success : DesignSystem.Colors.error,
+                    icon: (progressTracker?.averageImprovement ?? 0) >= 0 ? "arrow.up.circle.fill" : "arrow.down.circle.fill",
+                    trend: getTrendForImprovement(progressTracker?.averageImprovement ?? 0)
+                )
+            }
+        }
+    }
+    
+    // MARK: - Recent Sessions Section
+    private var recentSessionsSection: some View {
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.md) {
+            HStack {
+                Text("最近の録音")
+                    .font(DesignSystem.Typography.headline)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                
+                Spacer()
+                
+                if !recentSessions.isEmpty {
+                    Button("すべて見る") {
+                        // Navigate to history view
+                    }
+                    .font(DesignSystem.Typography.caption)
+                    .foregroundColor(DesignSystem.Colors.primary)
+                }
+            }
+            .padding(.horizontal, DesignSystem.Spacing.xs)
+            
+            if recentSessions.isEmpty {
+                ModernCard(elevation: .low) {
+                    VStack(spacing: DesignSystem.Spacing.md) {
+                        Image(systemName: "mic.slash.circle")
+                            .font(.system(size: 48))
+                            .foregroundColor(DesignSystem.Colors.textTertiary)
+                        
+                        VStack(spacing: DesignSystem.Spacing.sm) {
+                            Text("まだ録音がありません")
+                                .font(DesignSystem.Typography.headline)
+                                .foregroundColor(DesignSystem.Colors.textSecondary)
+                            
+                            Text("最初の録音を始めて、話し方の改善を始めましょう")
+                                .font(DesignSystem.Typography.body)
+                                .foregroundColor(DesignSystem.Colors.textTertiary)
+                                .multilineTextAlignment(.center)
+                        }
+                    }
+                }
+            } else {
+                ForEach(recentSessions.prefix(3), id: \.id) { session in
+                    ModernRecentSessionRow(session: session)
+                }
+            }
+        }
+    }
+    
+    // MARK: - Helper Methods
+    private func getTrend(for value: Int) -> TrendDirection? {
+        if value > 3 { return .up }
+        if value == 0 { return .stable }
+        return nil
+    }
+    
+    private func getTrendForImprovement(_ improvement: Double) -> TrendDirection? {
+        if improvement > 0 { return .up }
+        if improvement < 0 { return .down }
+        return .stable
+    }
+}
+
+// MARK: - Modern Metric Card Component
+struct ModernMetricCard: View {
+    let title: String
+    let value: String
+    let subtitle: String?
+    let color: Color
+    let icon: String
+    let trend: TrendDirection?
+    
+    init(
+        title: String,
+        value: String,
+        subtitle: String? = nil,
+        color: Color,
+        icon: String,
+        trend: TrendDirection? = nil
+    ) {
+        self.title = title
+        self.value = value
+        self.subtitle = subtitle
+        self.color = color
+        self.icon = icon
+        self.trend = trend
+    }
+    
+    var body: some View {
+        ModernCard(elevation: .medium, padding: DesignSystem.Spacing.md) {
+            VStack(alignment: .leading, spacing: DesignSystem.Spacing.sm) {
+                HStack {
+                    Image(systemName: icon)
+                        .font(.system(size: DesignSystem.IconSize.medium, weight: .semibold))
+                        .foregroundColor(color)
+                    
+                    Spacer()
+                    
+                    if let trend = trend {
+                        TrendIndicator(direction: trend)
+                    }
+                }
+                
+                VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
+                    Text(value)
+                        .font(DesignSystem.Typography.numberMedium)
+                        .foregroundColor(DesignSystem.Colors.textPrimary)
+                    
+                    if let subtitle = subtitle {
+                        Text(subtitle)
+                            .font(DesignSystem.Typography.caption2)
+                            .foregroundColor(DesignSystem.Colors.textTertiary)
+                    }
+                }
+                
+                Text(title)
+                    .font(DesignSystem.Typography.caption)
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
+            }
+        }
+    }
+}
+
+// MARK: - Modern Recent Session Row
+struct ModernRecentSessionRow: View {
+    let session: AudioSession
+    
+    private var sessionTitle: String {
+        session.title ?? "録音セッション"
+    }
+    
+    private var formattedDate: String {
+        session.createdAt?.formatted(date: .abbreviated, time: .shortened) ?? ""
+    }
+    
+    private var duration: String {
+        let minutes = Int(session.duration) / 60
+        let seconds = Int(session.duration) % 60
+        return minutes > 0 ? "\(minutes)分\(seconds)秒" : "\(seconds)秒"
+    }
+    
+    private var fillerInfo: (count: Int, rate: Double)? {
+        guard let analysis = session.analysis else { return nil }
+        let rate = session.duration > 0 ? Double(analysis.fillerCount) / (session.duration / 60) : 0
+        return (count: Int(analysis.fillerCount), rate: rate)
+    }
+    
+    var body: some View {
+        ModernCard(elevation: .low, padding: DesignSystem.Spacing.md) {
+            HStack(spacing: DesignSystem.Spacing.md) {
+                // Session Icon
+                Image(systemName: "waveform.circle.fill")
+                    .font(.system(size: DesignSystem.IconSize.large, weight: .medium))
+                    .foregroundColor(DesignSystem.Colors.primary)
+                
+                // Session Info
+                VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
+                    Text(sessionTitle)
+                        .font(DesignSystem.Typography.bodyBold)
+                        .foregroundColor(DesignSystem.Colors.textPrimary)
+                    
+                    Text(formattedDate)
+                        .font(DesignSystem.Typography.caption)
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
+                    
+                    HStack(spacing: DesignSystem.Spacing.sm) {
+                        // Duration badge
+                        HStack(spacing: 4) {
+                            Image(systemName: "clock")
+                                .font(.system(size: 10, weight: .medium))
+                            Text(duration)
+                                .font(DesignSystem.Typography.caption2)
+                        }
+                        .foregroundColor(DesignSystem.Colors.textTertiary)
+                        
+                        // Filler count badge
+                        if let filler = fillerInfo {
+                            HStack(spacing: 4) {
+                                Image(systemName: "exclamationmark.circle")
+                                    .font(.system(size: 10, weight: .medium))
+                                Text("\(filler.count)個")
+                                    .font(DesignSystem.Typography.caption2)
+                            }
+                            .foregroundColor(getFillerColor(count: filler.count))
+                        }
+                    }
+                }
+                
+                Spacer()
+                
+                // Action indicator
+                Image(systemName: "chevron.right")
+                    .font(.system(size: DesignSystem.IconSize.small, weight: .medium))
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+            }
+        }
+        .pressAnimation()
+    }
+    
+    private func getFillerColor(count: Int) -> Color {
+        switch count {
+        case 0...2: return DesignSystem.Colors.success
+        case 3...5: return DesignSystem.Colors.warning
+        default: return DesignSystem.Colors.error
+        }
     }
 }

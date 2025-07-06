@@ -3,7 +3,7 @@ platform :ios, '18.0'
 target 'FillarGym' do
   use_frameworks!
   
-  # Firebase Analytics追加
+  # Firebase Analytics for engagement tracking
   pod 'FirebaseCore'
   pod 'FirebaseAnalytics'
   

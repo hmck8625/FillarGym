@@ -18,6 +18,7 @@ struct AnalysisResultView: View {
     
     @State private var showingShareSheet = false
     @State private var shareText = ""
+    @State private var contentAppeared = false
     
     private var previousAnalysis: FillerAnalysis? {
         // 現在の分析より前の最新分析を取得
@@ -30,29 +31,30 @@ struct AnalysisResultView: View {
     }
     
     var body: some View {
-        ScrollView {
-                VStack(spacing: 25) {
+        NavigationView {
+            ScrollView {
+                LazyVStack(spacing: DesignSystem.Spacing.xl) {
                     // メイン結果表示
-                    MainResultCard(
+                    ModernMainResultCard(
                         fillerCount: Int(analysis.fillerCount),
                         improvementRate: improvementRate,
                         previousCount: previousAnalysis?.fillerCount
                     )
                     
                     // 詳細統計
-                    DetailedStatsSection(analysis: analysis)
+                    ModernDetailedStatsSection(analysis: analysis)
                     
                     // フィラー語内訳
-                    FillerWordsBreakdownSection(analysis: analysis)
+                    ModernFillerWordsBreakdownSection(analysis: analysis)
                     
                     // 文字起こし全文
-                    TranscriptionSection(analysis: analysis)
+                    ModernTranscriptionSection(analysis: analysis)
                     
                     // 改善アドバイス
-                    ImprovementAdviceSection(analysis: analysis, improvementRate: improvementRate)
+                    ModernImprovementAdviceSection(analysis: analysis, improvementRate: improvementRate)
                     
                     // アクションボタン
-                    ActionButtonsSection(
+                    ModernActionButtonsSection(
                         onShare: {
                             generateShareText()
                             showingShareSheet = true
@@ -65,8 +67,21 @@ struct AnalysisResultView: View {
                         }
                     )
                 }
-                .padding()
+                .padding(.horizontal, DesignSystem.Spacing.md)
+                .padding(.vertical, DesignSystem.Spacing.sm)
+                .opacity(contentAppeared ? 1.0 : 0.0)
+                .offset(y: contentAppeared ? 0 : 20)
             }
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        DesignSystem.Colors.background,
+                        DesignSystem.Colors.surfaceElevated.opacity(0.2)
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
             .navigationTitle("分析結果")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -74,8 +89,15 @@ struct AnalysisResultView: View {
                     Button("完了") {
                         onComplete?() ?? dismiss()
                     }
+                    .foregroundColor(DesignSystem.Colors.primary)
                 }
             }
+        }
+        .onAppear {
+            withAnimation(DesignSystem.Animation.standard) {
+                contentAppeared = true
+            }
+        }
         .sheet(isPresented: $showingShareSheet) {
             ShareSheet(text: shareText)
         }
@@ -105,7 +127,7 @@ struct AnalysisResultView: View {
     }
 }
 
-struct MainResultCard: View {
+struct ModernMainResultCard: View {
     let fillerCount: Int
     let improvementRate: Double
     let previousCount: Int16?
@@ -114,81 +136,75 @@ struct MainResultCard: View {
     @State private var cardAppeared = false
     
     var body: some View {
-        VStack(spacing: 20) {
-            // メインスコア
-            VStack(spacing: 8) {
-                Text("\(animatedCount)")
-                    .font(.system(size: 72, weight: .thin, design: .rounded))
-                    .foregroundColor(.primary)
-                    .contentTransition(.numericText())
-                    .scaleEffect(cardAppeared ? 1.0 : 0.8)
-                    .animation(.spring(response: 0.6, dampingFraction: 0.8), value: cardAppeared)
-                
-                Text("フィラー語")
-                    .font(.title2)
-                    .foregroundColor(.gray)
-                    .opacity(cardAppeared ? 1.0 : 0.0)
-                    .animation(.easeInOut(duration: 0.5).delay(0.3), value: cardAppeared)
-            }
-            
-            // 比較表示
-            if let previous = previousCount {
-                HStack(spacing: 15) {
-                    VStack {
-                        Text("前回")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        Text("\(previous)")
-                            .font(.title3)
-                            .fontWeight(.medium)
-                    }
-                    .opacity(showImprovement ? 1.0 : 0.0)
-                    .offset(x: showImprovement ? 0 : -20)
+        ModernCard(elevation: .high, padding: DesignSystem.Spacing.xl) {
+            VStack(spacing: DesignSystem.Spacing.xl) {
+                // メインスコア
+                VStack(spacing: DesignSystem.Spacing.md) {
+                    Text("\(animatedCount)")
+                        .font(DesignSystem.Typography.numberLarge.weight(.thin))
+                        .foregroundColor(DesignSystem.Colors.textPrimary)
+                        .contentTransition(.numericText())
+                        .scaleEffect(cardAppeared ? 1.0 : 0.8)
+                        .animation(DesignSystem.Animation.springBouncy, value: cardAppeared)
                     
-                    Image(systemName: improvementRate >= 0 ? "arrow.down.circle.fill" : "arrow.up.circle.fill")
-                        .font(.title2)
-                        .foregroundColor(improvementRate >= 0 ? .green : .red)
-                        .scaleEffect(showImprovement ? 1.0 : 0.5)
-                        .rotationEffect(.degrees(showImprovement ? 0 : 180))
-                    
-                    VStack {
-                        Text(improvementRate >= 0 ? "改善" : "増加")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                        Text("\(String(format: "%.1f", abs(improvementRate)))%")
-                            .font(.title3)
-                            .fontWeight(.medium)
-                            .foregroundColor(improvementRate >= 0 ? .green : .red)
-                    }
-                    .opacity(showImprovement ? 1.0 : 0.0)
-                    .offset(x: showImprovement ? 0 : 20)
+                    Text("フィラー語")
+                        .font(DesignSystem.Typography.title2)
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
+                        .opacity(cardAppeared ? 1.0 : 0.0)
+                        .animation(DesignSystem.Animation.standard.delay(0.3), value: cardAppeared)
                 }
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(12)
-                .animation(.easeInOut(duration: 0.7).delay(0.8), value: showImprovement)
+                
+                // 比較表示
+                if let previous = previousCount {
+                    ModernCard(elevation: .low, padding: DesignSystem.Spacing.lg) {
+                        HStack(spacing: DesignSystem.Spacing.lg) {
+                            VStack(spacing: DesignSystem.Spacing.xs) {
+                                Text("前回")
+                                    .font(DesignSystem.Typography.caption)
+                                    .foregroundColor(DesignSystem.Colors.textTertiary)
+                                Text("\(previous)")
+                                    .font(DesignSystem.Typography.numberMedium)
+                                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                            }
+                            .opacity(showImprovement ? 1.0 : 0.0)
+                            .offset(x: showImprovement ? 0 : -20)
+                            
+                            Spacer()
+                            
+                            TrendIndicator(direction: improvementRate >= 0 ? .down : .up)
+                                .scaleEffect(showImprovement ? 1.0 : 0.5)
+                                .animation(DesignSystem.Animation.spring.delay(0.5), value: showImprovement)
+                            
+                            Spacer()
+                            
+                            VStack(spacing: DesignSystem.Spacing.xs) {
+                                Text(improvementRate >= 0 ? "改善" : "増加")
+                                    .font(DesignSystem.Typography.caption)
+                                    .foregroundColor(DesignSystem.Colors.textTertiary)
+                                Text("\(String(format: "%.1f", abs(improvementRate)))%")
+                                    .font(DesignSystem.Typography.numberMedium)
+                                    .foregroundColor(improvementRate >= 0 ? DesignSystem.Colors.success : DesignSystem.Colors.error)
+                            }
+                            .opacity(showImprovement ? 1.0 : 0.0)
+                            .offset(x: showImprovement ? 0 : 20)
+                        }
+                    }
+                    .animation(DesignSystem.Animation.standard.delay(0.8), value: showImprovement)
+                }
             }
         }
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color(.systemBackground))
-                .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 2)
-        )
+        .pressAnimation()
         .onAppear {
-            // カード出現アニメーション
-            withAnimation(.easeOut(duration: 0.3)) {
+            withAnimation(DesignSystem.Animation.quick) {
                 cardAppeared = true
             }
             
-            // カウントアップアニメーション
-            withAnimation(.easeOut(duration: 1.2).delay(0.2)) {
+            withAnimation(DesignSystem.Animation.standard.delay(0.2)) {
                 animatedCount = fillerCount
             }
             
-            // 改善表示アニメーション
             if previousCount != nil {
-                withAnimation(.easeInOut(duration: 0.8).delay(0.8)) {
+                withAnimation(DesignSystem.Animation.standard.delay(0.8)) {
                     showImprovement = true
                 }
             }
@@ -196,59 +212,60 @@ struct MainResultCard: View {
     }
 }
 
-struct DetailedStatsSection: View {
+struct ModernDetailedStatsSection: View {
     let analysis: FillerAnalysis
     @State private var statsAppeared = false
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 15) {
-            Text("詳細統計")
-                .font(.headline)
-                .padding(.horizontal)
-                .opacity(statsAppeared ? 1.0 : 0.0)
-                .offset(y: statsAppeared ? 0 : 20)
-                .animation(.easeOut(duration: 0.5), value: statsAppeared)
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.lg) {
+            HStack {
+                Text("詳細統計")
+                    .font(DesignSystem.Typography.headline)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                
+                Spacer()
+            }
+            .padding(.horizontal, DesignSystem.Spacing.xs)
+            .opacity(statsAppeared ? 1.0 : 0.0)
+            .offset(y: statsAppeared ? 0 : 20)
+            .animation(DesignSystem.Animation.standard, value: statsAppeared)
             
-            LazyVGrid(columns: [
-                GridItem(.flexible()),
-                GridItem(.flexible())
-            ], spacing: 15) {
-                StatBox(
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: DesignSystem.Spacing.md), count: 2), spacing: DesignSystem.Spacing.md) {
+                ModernMetricCard(
                     title: "フィラー率",
-                    value: "\(String(format: "%.1f", analysis.fillerRate))/分",
-                    icon: "timer",
-                    color: .orange,
-                    animationDelay: 0.2
+                    value: String(format: "%.1f", analysis.fillerRate),
+                    subtitle: "/分",
+                    color: DesignSystem.Colors.warning,
+                    icon: "timer"
                 )
                 
-                StatBox(
+                ModernMetricCard(
                     title: "発話速度",
-                    value: "\(String(format: "%.0f", analysis.speakingSpeed))語/分",
-                    icon: "speedometer",
-                    color: .blue,
-                    animationDelay: 0.4
+                    value: String(format: "%.0f", analysis.speakingSpeed),
+                    subtitle: "語/分",
+                    color: DesignSystem.Colors.primary,
+                    icon: "speedometer"
                 )
                 
-                StatBox(
+                ModernMetricCard(
                     title: "録音時間",
-                    value: "\(String(format: "%.0f", analysis.audioSession?.duration ?? 0))秒",
-                    icon: "clock",
-                    color: .purple,
-                    animationDelay: 0.6
+                    value: String(format: "%.0f", analysis.audioSession?.duration ?? 0),
+                    subtitle: "秒",
+                    color: DesignSystem.Colors.secondary,
+                    icon: "clock"
                 )
                 
-                StatBox(
+                ModernMetricCard(
                     title: "分析日時",
                     value: (analysis.analysisDate ?? Date()).formatted(date: .abbreviated, time: .omitted),
-                    icon: "calendar",
-                    color: .green,
-                    animationDelay: 0.8
+                    subtitle: nil,
+                    color: DesignSystem.Colors.success,
+                    icon: "calendar"
                 )
             }
-            .padding(.horizontal)
         }
         .onAppear {
-            withAnimation(.easeOut(duration: 0.5).delay(1.0)) {
+            withAnimation(DesignSystem.Animation.standard.delay(1.0)) {
                 statsAppeared = true
             }
         }
@@ -320,7 +337,7 @@ struct StatBox: View {
     }
 }
 
-struct FillerWordsBreakdownSection: View {
+struct ModernFillerWordsBreakdownSection: View {
     let analysis: FillerAnalysis
     @State private var breakdownAppeared = false
     
@@ -332,57 +349,66 @@ struct FillerWordsBreakdownSection: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 15) {
-            Text("フィラー語内訳")
-                .font(.headline)
-                .padding(.horizontal)
-                .opacity(breakdownAppeared ? 1.0 : 0.0)
-                .offset(y: breakdownAppeared ? 0 : 20)
-                .animation(.easeOut(duration: 0.5), value: breakdownAppeared)
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.lg) {
+            HStack {
+                Text("フィラー語内訳")
+                    .font(DesignSystem.Typography.headline)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                
+                Spacer()
+            }
+            .padding(.horizontal, DesignSystem.Spacing.xs)
+            .opacity(breakdownAppeared ? 1.0 : 0.0)
+            .offset(y: breakdownAppeared ? 0 : 20)
+            .animation(DesignSystem.Animation.standard, value: breakdownAppeared)
             
             if fillerWordsArray.isEmpty {
-                VStack(spacing: 12) {
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.title)
-                        .foregroundColor(.green)
-                        .scaleEffect(breakdownAppeared ? 1.0 : 0.5)
-                        .animation(.spring(response: 0.6, dampingFraction: 0.7).delay(0.3), value: breakdownAppeared)
-                    
-                    Text("フィラー語が検出されませんでした")
-                        .foregroundColor(.secondary)
-                        .opacity(breakdownAppeared ? 1.0 : 0.0)
-                        .animation(.easeOut(duration: 0.5).delay(0.5), value: breakdownAppeared)
-                    
-                    Text("素晴らしいスピーチでした！")
-                        .font(.caption)
-                        .foregroundColor(.green)
-                        .opacity(breakdownAppeared ? 1.0 : 0.0)
-                        .animation(.easeOut(duration: 0.5).delay(0.7), value: breakdownAppeared)
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-            } else {
-                VStack(spacing: 8) {
-                    ForEach(Array(fillerWordsArray.enumerated()), id: \.element.id) { index, fillerWord in
-                        FillerWordRow(
-                            fillerWord: fillerWord, 
-                            totalCount: Int(analysis.fillerCount),
-                            animationDelay: Double(index) * 0.1
-                        )
+                ModernCard(elevation: .low, padding: DesignSystem.Spacing.xl) {
+                    VStack(spacing: DesignSystem.Spacing.md) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: DesignSystem.IconSize.extraLarge))
+                            .foregroundColor(DesignSystem.Colors.success)
+                            .scaleEffect(breakdownAppeared ? 1.0 : 0.5)
+                            .animation(DesignSystem.Animation.springBouncy.delay(0.3), value: breakdownAppeared)
+                        
+                        VStack(spacing: DesignSystem.Spacing.sm) {
+                            Text("フィラー語が検出されませんでした")
+                                .font(DesignSystem.Typography.headline)
+                                .foregroundColor(DesignSystem.Colors.textSecondary)
+                                .opacity(breakdownAppeared ? 1.0 : 0.0)
+                                .animation(DesignSystem.Animation.standard.delay(0.5), value: breakdownAppeared)
+                            
+                            Text("素晴らしいスピーチでした！")
+                                .font(DesignSystem.Typography.body)
+                                .foregroundColor(DesignSystem.Colors.success)
+                                .opacity(breakdownAppeared ? 1.0 : 0.0)
+                                .animation(DesignSystem.Animation.standard.delay(0.7), value: breakdownAppeared)
+                        }
                     }
                 }
-                .padding(.horizontal)
+            } else {
+                ModernCard(elevation: .low, padding: DesignSystem.Spacing.lg) {
+                    VStack(spacing: DesignSystem.Spacing.md) {
+                        ForEach(Array(fillerWordsArray.enumerated()), id: \.element.id) { index, fillerWord in
+                            ModernFillerWordRow(
+                                fillerWord: fillerWord, 
+                                totalCount: Int(analysis.fillerCount),
+                                animationDelay: Double(index) * 0.1
+                            )
+                        }
+                    }
+                }
             }
         }
         .onAppear {
-            withAnimation(.easeOut(duration: 0.5).delay(1.5)) {
+            withAnimation(DesignSystem.Animation.standard.delay(1.5)) {
                 breakdownAppeared = true
             }
         }
     }
 }
 
-struct FillerWordRow: View {
+struct ModernFillerWordRow: View {
     let fillerWord: FillerWord
     let totalCount: Int
     let animationDelay: Double
@@ -409,25 +435,24 @@ struct FillerWordRow: View {
     }
     
     var body: some View {
-        HStack {
+        HStack(spacing: DesignSystem.Spacing.md) {
             Text(fillerWord.word ?? "不明")
-                .font(.subheadline)
-                .fontWeight(.medium)
-                .frame(width: 60, alignment: .leading)
+                .font(DesignSystem.Typography.bodyBold)
+                .foregroundColor(DesignSystem.Colors.textPrimary)
+                .frame(width: 70, alignment: .leading)
                 .opacity(rowAppeared ? 1.0 : 0.0)
                 .offset(x: rowAppeared ? 0 : -20)
-                .animation(.easeOut(duration: 0.4).delay(animationDelay), value: rowAppeared)
+                .animation(DesignSystem.Animation.standard.delay(animationDelay), value: rowAppeared)
             
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
-                    Rectangle()
-                        .fill(Color(.systemGray5))
+                    RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.small)
+                        .fill(DesignSystem.Colors.backgroundSecondary)
                         .frame(height: 8)
-                        .cornerRadius(4)
                         .opacity(rowAppeared ? 1.0 : 0.3)
-                        .animation(.easeOut(duration: 0.3).delay(animationDelay + 0.1), value: rowAppeared)
+                        .animation(DesignSystem.Animation.quick.delay(animationDelay + 0.1), value: rowAppeared)
                     
-                    Rectangle()
+                    RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.small)
                         .fill(
                             LinearGradient(
                                 gradient: Gradient(colors: [
@@ -439,11 +464,9 @@ struct FillerWordRow: View {
                             )
                         )
                         .frame(width: geometry.size.width * (progressWidth / 100), height: 8)
-                        .cornerRadius(4)
-                        .animation(.easeInOut(duration: 0.8).delay(animationDelay + 0.2), value: progressWidth)
+                        .animation(DesignSystem.Animation.standard.delay(animationDelay + 0.2), value: progressWidth)
                 }
                 .onAppear {
-                    // ジオメトリの幅が決まった後にアニメーション開始
                     DispatchQueue.main.asyncAfter(deadline: .now() + animationDelay + 0.2) {
                         progressWidth = percentage
                     }
@@ -451,27 +474,27 @@ struct FillerWordRow: View {
             }
             .frame(height: 8)
             
-            VStack(alignment: .trailing) {
+            VStack(alignment: .trailing, spacing: DesignSystem.Spacing.xs) {
                 Text("\(fillerWord.count)回")
-                    .font(.caption)
-                    .fontWeight(.medium)
+                    .font(DesignSystem.Typography.caption)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
                     .opacity(rowAppeared ? 1.0 : 0.0)
-                    .animation(.easeOut(duration: 0.4).delay(animationDelay + 0.3), value: rowAppeared)
+                    .animation(DesignSystem.Animation.standard.delay(animationDelay + 0.3), value: rowAppeared)
                 
                 Text("\(String(format: "%.0f", percentage))%")
-                    .font(.caption2)
-                    .foregroundColor(.secondary)
+                    .font(DesignSystem.Typography.caption2)
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
                     .opacity(rowAppeared ? 1.0 : 0.0)
-                    .animation(.easeOut(duration: 0.4).delay(animationDelay + 0.4), value: rowAppeared)
+                    .animation(DesignSystem.Animation.standard.delay(animationDelay + 0.4), value: rowAppeared)
             }
             .frame(width: 50)
             .offset(x: rowAppeared ? 0 : 20)
-            .animation(.easeOut(duration: 0.4).delay(animationDelay + 0.2), value: rowAppeared)
+            .animation(DesignSystem.Animation.standard.delay(animationDelay + 0.2), value: rowAppeared)
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, DesignSystem.Spacing.xs)
         .scaleEffect(rowAppeared ? 1.0 : 0.95)
         .opacity(rowAppeared ? 1.0 : 0.0)
-        .animation(.easeOut(duration: 0.5).delay(animationDelay), value: rowAppeared)
+        .animation(DesignSystem.Animation.standard.delay(animationDelay), value: rowAppeared)
         .onAppear {
             withAnimation {
                 rowAppeared = true
@@ -480,7 +503,7 @@ struct FillerWordRow: View {
     }
 }
 
-struct ImprovementAdviceSection: View {
+struct ModernImprovementAdviceSection: View {
     let analysis: FillerAnalysis
     let improvementRate: Double
     
@@ -525,17 +548,21 @@ struct ImprovementAdviceSection: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 15) {
-            Text("改善アドバイス")
-                .font(.headline)
-                .padding(.horizontal)
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.lg) {
+            HStack {
+                Text("改善アドバイス")
+                    .font(DesignSystem.Typography.headline)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                
+                Spacer()
+            }
+            .padding(.horizontal, DesignSystem.Spacing.xs)
             
-            VStack(spacing: 12) {
+            VStack(spacing: DesignSystem.Spacing.md) {
                 ForEach(adviceItems, id: \.title) { advice in
-                    AdviceRow(advice: advice)
+                    ModernAdviceRow(advice: advice)
                 }
             }
-            .padding(.horizontal)
         }
     }
 }
@@ -559,34 +586,36 @@ struct AdviceItem {
     }
 }
 
-struct AdviceRow: View {
+struct ModernAdviceRow: View {
     let advice: AdviceItem
     
     var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            Image(systemName: advice.icon)
-                .font(.title3)
-                .foregroundColor(advice.priority.color)
-                .frame(width: 24)
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(advice.title)
-                    .font(.subheadline)
-                    .fontWeight(.medium)
+        ModernCard(elevation: .low, padding: DesignSystem.Spacing.md) {
+            HStack(alignment: .top, spacing: DesignSystem.Spacing.md) {
+                Image(systemName: advice.icon)
+                    .font(.system(size: DesignSystem.IconSize.medium, weight: .semibold))
+                    .foregroundColor(advice.priority.color)
+                    .frame(width: DesignSystem.IconSize.large)
                 
-                Text(advice.description)
-                    .font(.caption)
-                    .foregroundColor(.gray)
-                    .fixedSize(horizontal: false, vertical: true)
+                VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
+                    Text(advice.title)
+                        .font(DesignSystem.Typography.bodyBold)
+                        .foregroundColor(DesignSystem.Colors.textPrimary)
+                    
+                    Text(advice.description)
+                        .font(DesignSystem.Typography.body)
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                
+                Spacer()
             }
         }
-        .padding()
-        .background(Color(.systemGray6))
-        .cornerRadius(12)
+        .pressAnimation()
     }
 }
 
-struct ActionButtonsSection: View {
+struct ModernActionButtonsSection: View {
     let onShare: () -> Void
     let onNewRecording: () -> Void
     let onClose: () -> Void
@@ -609,68 +638,43 @@ struct ActionButtonsSection: View {
     }
     
     var body: some View {
-        VStack(spacing: 12) {
-            Button(action: onShare) {
-                HStack {
-                    Image(systemName: "square.and.arrow.up")
-                        .font(.system(size: 16, weight: .medium))
-                    Text("結果をシェア")
-                        .fontWeight(.medium)
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(shareButtonGradient)
-                .foregroundColor(.white)
-                .cornerRadius(12)
-                .shadow(color: .blue.opacity(0.3), radius: 8, x: 0, y: 4)
+        VStack(spacing: DesignSystem.Spacing.md) {
+            PillButton(
+                title: "結果をシェア",
+                icon: "square.and.arrow.up",
+                size: .large,
+                variant: .primary
+            ) {
+                onShare()
             }
             .scaleEffect(buttonsAppeared ? 1.0 : 0.9)
             .opacity(buttonsAppeared ? 1.0 : 0.0)
-            .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(2.5), value: buttonsAppeared)
+            .animation(DesignSystem.Animation.springBouncy.delay(2.5), value: buttonsAppeared)
             
-            Button(action: onNewRecording) {
-                HStack {
-                    Image(systemName: "mic.circle")
-                        .font(.system(size: 16, weight: .medium))
-                    Text("新しい録音")
-                        .fontWeight(.medium)
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(newRecordingButtonBackground)
-                .foregroundColor(.primary)
-                .cornerRadius(12)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.primary.opacity(0.1), lineWidth: 1)
-                )
+            PillButton(
+                title: "新しい録音",
+                icon: "mic.circle",
+                size: .large,
+                variant: .secondary
+            ) {
+                onNewRecording()
             }
             .scaleEffect(buttonsAppeared ? 1.0 : 0.9)
             .opacity(buttonsAppeared ? 1.0 : 0.0)
-            .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(2.7), value: buttonsAppeared)
+            .animation(DesignSystem.Animation.springBouncy.delay(2.7), value: buttonsAppeared)
             
-            Button(action: onClose) {
-                HStack {
-                    Image(systemName: "xmark.circle")
-                        .font(.system(size: 16, weight: .medium))
-                    Text("閉じる")
-                        .fontWeight(.medium)
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color(.systemGray4))
-                .foregroundColor(.primary)
-                .cornerRadius(12)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(Color.primary.opacity(0.2), lineWidth: 1)
-                )
+            PillButton(
+                title: "閉じる",
+                icon: "xmark.circle",
+                size: .large,
+                variant: .ghost
+            ) {
+                onClose()
             }
             .scaleEffect(buttonsAppeared ? 1.0 : 0.9)
             .opacity(buttonsAppeared ? 1.0 : 0.0)
-            .animation(.spring(response: 0.6, dampingFraction: 0.8).delay(2.9), value: buttonsAppeared)
+            .animation(DesignSystem.Animation.springBouncy.delay(2.9), value: buttonsAppeared)
         }
-        .padding(.horizontal)
         .onAppear {
             withAnimation {
                 buttonsAppeared = true
@@ -679,7 +683,7 @@ struct ActionButtonsSection: View {
     }
 }
 
-struct TranscriptionSection: View {
+struct ModernTranscriptionSection: View {
     let analysis: FillerAnalysis
     @State private var isExpanded = false
     @Environment(\.colorScheme) private var colorScheme
@@ -694,58 +698,51 @@ struct TranscriptionSection: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 15) {
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.lg) {
             HStack {
                 Text("文字起こし全文")
-                    .font(.headline)
+                    .font(DesignSystem.Typography.headline)
+                    .foregroundColor(DesignSystem.Colors.textPrimary)
+                
                 Spacer()
+                
                 Button(action: {
-                    withAnimation {
+                    withAnimation(DesignSystem.Animation.quick) {
                         isExpanded.toggle()
                     }
                 }) {
-                    HStack(spacing: 4) {
+                    HStack(spacing: DesignSystem.Spacing.xs) {
                         Text(isExpanded ? "閉じる" : "表示")
-                            .font(.caption)
+                            .font(DesignSystem.Typography.caption)
                         Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
-                            .font(.caption)
+                            .font(DesignSystem.Typography.caption)
                     }
-                    .foregroundColor(.blue)
+                    .foregroundColor(DesignSystem.Colors.primary)
                 }
             }
-            .padding(.horizontal)
+            .padding(.horizontal, DesignSystem.Spacing.xs)
             
             if isExpanded {
-                VStack(alignment: .leading, spacing: 10) {
-                    // 文字起こしテキスト表示
-                    ScrollView {
-                        Text(highlightedText)
-                            .font(.body)
-                            .lineSpacing(8)
-                            .padding()
-                            .frame(maxHeight: 300)
-                    }
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(colorScheme == .dark ? Color(.systemGray5) : Color(.systemGray6))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color.primary.opacity(0.1), lineWidth: 1)
-                            )
-                    )
-                    
-                    // コピーボタン
-                    Button(action: copyTranscription) {
-                        HStack {
-                            Image(systemName: "doc.on.doc")
-                            Text("テキストをコピー")
+                VStack(alignment: .leading, spacing: DesignSystem.Spacing.md) {
+                    ModernCard(elevation: .low, padding: DesignSystem.Spacing.md) {
+                        ScrollView {
+                            Text(highlightedText)
+                                .font(DesignSystem.Typography.body)
+                                .lineSpacing(8)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .frame(maxHeight: 300)
                         }
-                        .font(.caption)
-                        .foregroundColor(.blue)
                     }
-                    .padding(.horizontal)
+                    
+                    PillButton(
+                        title: "テキストをコピー",
+                        icon: "doc.on.doc",
+                        size: .medium,
+                        variant: .outline
+                    ) {
+                        copyTranscription()
+                    }
                 }
-                .padding(.horizontal)
                 .transition(.opacity.combined(with: .move(edge: .top)))
             }
         }

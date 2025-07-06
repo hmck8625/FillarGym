@@ -27,6 +27,29 @@ struct TabBarView: View {
                     Text("設定")
                 }
         }
-        .accentColor(.blue)
+        .accentColor(DesignSystem.Colors.secondary)
+        .preferredColorScheme(.light)
+        .onAppear {
+            // Tab bar appearance
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = UIColor(DesignSystem.Colors.surface)
+            appearance.shadowColor = UIColor(DesignSystem.Colors.shadowLight)
+            
+            // Selected item color
+            appearance.stackedLayoutAppearance.selected.iconColor = UIColor(DesignSystem.Colors.secondary)
+            appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
+                .foregroundColor: UIColor(DesignSystem.Colors.secondary)
+            ]
+            
+            // Normal item color
+            appearance.stackedLayoutAppearance.normal.iconColor = UIColor(DesignSystem.Colors.textSecondary)
+            appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
+                .foregroundColor: UIColor(DesignSystem.Colors.textSecondary)
+            ]
+            
+            UITabBar.appearance().standardAppearance = appearance
+            UITabBar.appearance().scrollEdgeAppearance = appearance
+        }
     }
 }

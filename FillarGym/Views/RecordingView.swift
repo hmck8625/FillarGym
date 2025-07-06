@@ -15,79 +15,35 @@ struct RecordingView: View {
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 30) {
-                // タイトル入力
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("録音タイトル")
-                        .font(.headline)
-                    TextField("録音セッション名を入力（任意）", text: $sessionTitle)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                }
-                .padding(.horizontal)
-                
-                Spacer()
-                
-                // 録音状態表示
-                VStack(spacing: 20) {
-                    // 音声レベルビジュアライザー
-                    AudioLevelVisualizer(level: audioRecorder.audioLevels, isRecording: audioRecorder.isRecording)
-                    
-                    // 時間表示
-                    VStack(spacing: 8) {
-                        Text(audioRecorder.formatTime(audioRecorder.recordingDuration))
-                            .font(.system(size: 48, weight: .thin, design: .monospaced))
-                            .foregroundColor(audioRecorder.isRecording ? .red : .primary)
+            GeometryReader { geometry in
+                ScrollView {
+                    VStack(spacing: DesignSystem.Spacing.xl) {
+                        // Header Section
+                        headerSection
                         
-                        if audioRecorder.isRecording {
-                            Text("残り \(audioRecorder.formatTime(audioRecorder.remainingTime))")
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                        }
+                        // Main Recording Interface
+                        mainRecordingInterface
+                        
+                        // Control Buttons
+                        controlButtonsSection
+                        
+                        // Secondary Actions
+                        secondaryActionsSection
                     }
-                    
-                    // 録音状態テキスト
-                    Text(audioRecorder.isRecording ? "録音中..." : "録音を開始する準備ができました")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
+                    .padding(.horizontal, DesignSystem.Spacing.md)
+                    .frame(minHeight: geometry.size.height)
                 }
-                
-                Spacer()
-                
-                // コントロールボタン
-                VStack(spacing: 20) {
-                    // メイン録音ボタン
-                    Button(action: {
-                        if audioRecorder.hasPermission {
-                            if audioRecorder.isRecording {
-                                audioRecorder.stopRecording()
-                                // メインスレッドで確実に実行
-                                DispatchQueue.main.async {
-                                    saveRecordingSession()
-                                }
-                            } else {
-                                audioRecorder.startRecording()
-                            }
-                        } else {
-                            showingPermissionAlert = true
-                        }
-                    }) {
-                        Image(systemName: audioRecorder.isRecording ? "stop.circle.fill" : "record.circle.fill")
-                            .font(.system(size: 80))
-                            .foregroundColor(audioRecorder.isRecording ? .red : .blue)
-                    }
-                    .disabled(!audioRecorder.hasPermission)
-                    
-                    // キャンセルボタン（録音中のみ表示）
-                    if audioRecorder.isRecording {
-                        Button("キャンセル") {
-                            audioRecorder.cancelRecording()
-                        }
-                        .foregroundColor(.red)
-                    }
-                }
-                
-                Spacer()
             }
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        DesignSystem.Colors.background,
+                        DesignSystem.Colors.surfaceElevated.opacity(0.3)
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
             .navigationTitle("録音")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -99,14 +55,182 @@ struct RecordingView: View {
                         dismiss()
                     }
                     .disabled(audioRecorder.isRecording)
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
                 }
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("ファイル選択") {
+                    Button(action: {
                         showingFilePicker = true
+                    }) {
+                        Image(systemName: "folder")
+                            .foregroundColor(DesignSystem.Colors.primary)
                     }
                     .disabled(audioRecorder.isRecording)
                 }
+            }
+        }
+    }
+    
+    // MARK: - Header Section
+    private var headerSection: some View {
+        ModernCard(elevation: .low, padding: DesignSystem.Spacing.lg) {
+            VStack(alignment: .leading, spacing: DesignSystem.Spacing.md) {
+                HStack {
+                    Text("録音タイトル")
+                        .font(DesignSystem.Typography.headline)
+                        .foregroundColor(DesignSystem.Colors.textPrimary)
+                    
+                    Spacer()
+                    
+                    if !sessionTitle.isEmpty {
+                        StatusBadge(text: "カスタム", status: .info)
+                    }
+                }
+                
+                TextField("録音セッション名を入力（任意）", text: $sessionTitle)
+                    .font(DesignSystem.Typography.body)
+                    .padding(DesignSystem.Spacing.md)
+                    .background(DesignSystem.Colors.backgroundSecondary)
+                    .cornerRadius(DesignSystem.CornerRadius.medium)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.medium)
+                            .stroke(sessionTitle.isEmpty ? DesignSystem.Colors.border : DesignSystem.Colors.primary, lineWidth: 1)
+                    )
+            }
+        }
+    }
+    
+    // MARK: - Main Recording Interface
+    private var mainRecordingInterface: some View {
+        ModernCard(elevation: .high, padding: DesignSystem.Spacing.xl) {
+            VStack(spacing: DesignSystem.Spacing.xl) {
+                // Status Indicator
+                VStack(spacing: DesignSystem.Spacing.sm) {
+                    Text(audioRecorder.isRecording ? "録音中" : "録音準備完了")
+                        .font(DesignSystem.Typography.headline)
+                        .foregroundColor(DesignSystem.Colors.textPrimary)
+                    
+                    StatusBadge(
+                        text: audioRecorder.isRecording ? "LIVE" : "READY",
+                        status: audioRecorder.isRecording ? .error : .success
+                    )
+                }
+                
+                // Modern Audio Visualizer
+                ModernAudioLevelVisualizer(
+                    level: audioRecorder.audioLevels,
+                    isRecording: audioRecorder.isRecording
+                )
+                
+                // Time Display
+                timeDisplaySection
+                
+                // Progress indicator for recording
+                if audioRecorder.isRecording {
+                    progressSection
+                }
+            }
+        }
+    }
+    
+    // MARK: - Time Display Section
+    private var timeDisplaySection: some View {
+        VStack(spacing: DesignSystem.Spacing.sm) {
+            Text(audioRecorder.formatTime(audioRecorder.recordingDuration))
+                .font(DesignSystem.Typography.numberLarge.monospaced())
+                .foregroundColor(audioRecorder.isRecording ? DesignSystem.Colors.error : DesignSystem.Colors.textPrimary)
+                .animation(DesignSystem.Animation.quick, value: audioRecorder.recordingDuration)
+            
+            if audioRecorder.isRecording {
+                Text("残り \(audioRecorder.formatTime(audioRecorder.remainingTime))")
+                    .font(DesignSystem.Typography.caption)
+                    .foregroundColor(DesignSystem.Colors.textSecondary)
+                    .transition(.opacity)
+            }
+        }
+    }
+    
+    // MARK: - Progress Section
+    private var progressSection: some View {
+        VStack(spacing: DesignSystem.Spacing.sm) {
+            ProgressView(value: audioRecorder.recordingProgress)
+                .progressViewStyle(ModernProgressViewStyle(color: DesignSystem.Colors.error))
+            
+            HStack {
+                Text("0:00")
+                    .font(DesignSystem.Typography.caption2)
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+                
+                Spacer()
+                
+                Text(audioRecorder.formatTime(audioRecorder.maxRecordingDuration))
+                    .font(DesignSystem.Typography.caption2)
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+            }
+        }
+    }
+    
+    // MARK: - Control Buttons Section
+    private var controlButtonsSection: some View {
+        VStack(spacing: DesignSystem.Spacing.lg) {
+            // Main Recording Button
+            RecordingButton(
+                isRecording: audioRecorder.isRecording,
+                hasPermission: audioRecorder.hasPermission,
+                onTap: {
+                    if audioRecorder.hasPermission {
+                        if audioRecorder.isRecording {
+                            audioRecorder.stopRecording()
+                            DispatchQueue.main.async {
+                                saveRecordingSession()
+                            }
+                        } else {
+                            audioRecorder.startRecording()
+                        }
+                    } else {
+                        showingPermissionAlert = true
+                    }
+                }
+            )
+            
+            // Cancel Button (only during recording)
+            if audioRecorder.isRecording {
+                PillButton(
+                    title: "録音をキャンセル",
+                    icon: "xmark",
+                    size: .medium,
+                    variant: .outline
+                ) {
+                    audioRecorder.cancelRecording()
+                }
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
+        }
+    }
+    
+    // MARK: - Secondary Actions Section
+    private var secondaryActionsSection: some View {
+        VStack(spacing: DesignSystem.Spacing.md) {
+            if !audioRecorder.isRecording {
+                HStack {
+                    Text("または")
+                        .font(DesignSystem.Typography.caption)
+                        .foregroundColor(DesignSystem.Colors.textTertiary)
+                    
+                    Rectangle()
+                        .frame(height: 1)
+                        .foregroundColor(DesignSystem.Colors.border)
+                }
+                
+                PillButton(
+                    title: "ファイルから分析",
+                    icon: "folder",
+                    size: .medium,
+                    variant: .secondary
+                ) {
+                    showingFilePicker = true
+                }
+                .transition(.opacity)
             }
         }
         .alert("マイクの許可が必要です", isPresented: $showingPermissionAlert) {
@@ -345,33 +469,167 @@ struct RecordingView: View {
     }
 }
 
-struct AudioLevelVisualizer: View {
+// MARK: - Modern Audio Level Visualizer
+struct ModernAudioLevelVisualizer: View {
     let level: Float
     let isRecording: Bool
     
+    @State private var animationScale: CGFloat = 1.0
+    @State private var pulseAnimation: Bool = false
+    
     var body: some View {
         ZStack {
-            // 背景円
+            // Background circle with soft shadow
             Circle()
-                .stroke(Color.gray.opacity(0.3), lineWidth: 4)
+                .fill(DesignSystem.Colors.surface)
                 .frame(width: 200, height: 200)
+                .shadow(
+                    color: DesignSystem.Colors.shadowMedium,
+                    radius: 16,
+                    x: 0,
+                    y: 8
+                )
             
-            // レベル表示円
+            // Level progress ring
+            Circle()
+                .stroke(DesignSystem.Colors.border, lineWidth: 8)
+                .frame(width: 180, height: 180)
+            
             Circle()
                 .trim(from: 0, to: CGFloat(level))
                 .stroke(
-                    isRecording ? Color.red : Color.blue,
+                    isRecording ? DesignSystem.Colors.error : DesignSystem.Colors.primary,
                     style: StrokeStyle(lineWidth: 8, lineCap: .round)
                 )
-                .frame(width: 200, height: 200)
+                .frame(width: 180, height: 180)
                 .rotationEffect(.degrees(-90))
-                .animation(.easeInOut(duration: 0.1), value: level)
+                .animation(DesignSystem.Animation.quick, value: level)
             
-            // 中央アイコン
-            Image(systemName: isRecording ? "waveform" : "mic")
-                .font(.system(size: 40))
-                .foregroundColor(isRecording ? .red : .blue)
+            // Pulsing center circle when recording
+            if isRecording {
+                Circle()
+                    .fill(DesignSystem.Colors.error.opacity(0.2))
+                    .frame(width: 120, height: 120)
+                    .scaleEffect(pulseAnimation ? 1.2 : 1.0)
+                    .opacity(pulseAnimation ? 0.5 : 1.0)
+                    .animation(
+                        Animation.easeInOut(duration: 1.0).repeatForever(autoreverses: true),
+                        value: pulseAnimation
+                    )
+            }
+            
+            // Center icon with background
+            Circle()
+                .fill(isRecording ? DesignSystem.Colors.error : DesignSystem.Colors.primary)
+                .frame(width: 80, height: 80)
+                .scaleEffect(animationScale)
+                .shadow(
+                    color: isRecording ? DesignSystem.Colors.error.opacity(0.3) : DesignSystem.Colors.primary.opacity(0.3),
+                    radius: 12,
+                    x: 0,
+                    y: 6
+                )
+            
+            Image(systemName: isRecording ? "waveform" : "mic.fill")
+                .font(.system(size: 32, weight: .semibold))
+                .foregroundColor(DesignSystem.Colors.textInverse)
         }
+        .animation(DesignSystem.Animation.spring, value: isRecording)
+        .onAppear {
+            if isRecording {
+                pulseAnimation = true
+            }
+        }
+        .onChange(of: isRecording) { newValue in
+            pulseAnimation = newValue
+            withAnimation(DesignSystem.Animation.springBouncy) {
+                animationScale = newValue ? 1.1 : 1.0
+            }
+        }
+        .onChange(of: level) { _ in
+            // Subtle scale animation based on audio level
+            if isRecording {
+                withAnimation(.easeInOut(duration: 0.1)) {
+                    animationScale = 1.0 + (CGFloat(level) * 0.2)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Recording Button Component
+struct RecordingButton: View {
+    let isRecording: Bool
+    let hasPermission: Bool
+    let onTap: () -> Void
+    
+    @State private var isPressed = false
+    
+    var body: some View {
+        Button(action: onTap) {
+            ZStack {
+                // Background circle
+                Circle()
+                    .fill(backgroundColor)
+                    .frame(width: buttonSize, height: buttonSize)
+                    .scaleEffect(isPressed ? 0.95 : 1.0)
+                    .shadow(
+                        color: shadowColor,
+                        radius: isPressed ? 8 : 16,
+                        x: 0,
+                        y: isPressed ? 4 : 8
+                    )
+                
+                // Icon
+                Image(systemName: iconName)
+                    .font(.system(size: iconSize, weight: .semibold))
+                    .foregroundColor(iconColor)
+                    .scaleEffect(isPressed ? 0.9 : 1.0)
+            }
+        }
+        .pressEvents(
+            onPress: { isPressed = true },
+            onRelease: { isPressed = false }
+        )
+        .animation(DesignSystem.Animation.spring, value: isPressed)
+        .animation(DesignSystem.Animation.standard, value: isRecording)
+        .disabled(!hasPermission)
+    }
+    
+    private var buttonSize: CGFloat {
+        isRecording ? 100 : 120
+    }
+    
+    private var iconSize: CGFloat {
+        isRecording ? 40 : 48
+    }
+    
+    private var backgroundColor: Color {
+        if !hasPermission {
+            return DesignSystem.Colors.backgroundSecondary
+        }
+        return isRecording ? DesignSystem.Colors.error : DesignSystem.Colors.primary
+    }
+    
+    private var iconColor: Color {
+        if !hasPermission {
+            return DesignSystem.Colors.textTertiary
+        }
+        return DesignSystem.Colors.textInverse
+    }
+    
+    private var iconName: String {
+        if !hasPermission {
+            return "mic.slash"
+        }
+        return isRecording ? "stop.fill" : "mic.fill"
+    }
+    
+    private var shadowColor: Color {
+        if !hasPermission {
+            return DesignSystem.Colors.shadowLight
+        }
+        return isRecording ? DesignSystem.Colors.error.opacity(0.3) : DesignSystem.Colors.primary.opacity(0.3)
     }
 }
 

@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "名称未設定のデザイン 1.png",
+      "filename" : "名称未設定のデザイン 3.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -13,7 +13,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "名称未設定のデザイン 2.png",
+      "filename" : "名称未設定のデザイン 4.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -25,7 +25,7 @@
           "value" : "tinted"
         }
       ],
-      "filename" : "名称未設定のデザイン.png",
+      "filename" : "名称未設定のデザイン 5.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"

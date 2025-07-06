@@ -66,33 +66,31 @@ struct HistoryView: View {
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 0) {
-                // 統計サマリー
-                if !audioSessions.isEmpty {
-                    StatsSummarySection(
-                        totalSessions: totalSessions,
-                        totalDuration: totalDuration,
-                        averageFillerCount: averageFillerCount
-                    )
-                }
-                
-                // 検索とフィルター
-                VStack(spacing: 16) {
-                    EnhancedSearchBar(text: $searchText)
+            ScrollView {
+                LazyVStack(spacing: DesignSystem.Spacing.lg) {
+                    // 統計サマリー
+                    if !audioSessions.isEmpty {
+                        ModernStatsSummarySection(
+                            totalSessions: totalSessions,
+                            totalDuration: totalDuration,
+                            averageFillerCount: averageFillerCount
+                        )
+                    }
                     
-                    SortOptionsView(selection: $sortOption)
-                }
-                .padding()
-                .background(Color(.systemGray6))
-                
-                // セッション一覧
-                if filteredSessions.isEmpty {
-                    EmptyStateView(hasData: !audioSessions.isEmpty)
-                } else {
-                    ScrollView {
-                        LazyVStack(spacing: 16) {
+                    // 検索とフィルター
+                    VStack(spacing: DesignSystem.Spacing.md) {
+                        ModernSearchBar(text: $searchText)
+                        ModernSortOptionsView(selection: $sortOption)
+                    }
+                    .padding(.horizontal, DesignSystem.Spacing.md)
+                    
+                    // セッション一覧
+                    if filteredSessions.isEmpty {
+                        ModernEmptyStateView(hasData: !audioSessions.isEmpty)
+                    } else {
+                        LazyVStack(spacing: DesignSystem.Spacing.md) {
                             ForEach(Array(filteredSessions.enumerated()), id: \.element.id) { index, session in
-                                ModernSessionCard(
+                                ModernHistorySessionCard(
                                     session: session,
                                     index: index,
                                     onTap: {
@@ -104,15 +102,23 @@ struct HistoryView: View {
                                         showingDeleteAlert = true
                                     }
                                 )
-                                .padding(.horizontal)
                             }
                         }
-                        .padding(.vertical)
+                        .padding(.horizontal, DesignSystem.Spacing.md)
                     }
                 }
-                
-                Spacer()
+                .padding(.vertical, DesignSystem.Spacing.sm)
             }
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        DesignSystem.Colors.background,
+                        DesignSystem.Colors.surfaceElevated.opacity(0.2)
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
             .navigationTitle("録音履歴")
             .navigationBarTitleDisplayMode(.large)
         }
@@ -147,53 +153,60 @@ struct HistoryView: View {
     }
 }
 
-// MARK: - Stats Summary Section
-struct StatsSummarySection: View {
+// MARK: - Modern Stats Summary Section
+struct ModernStatsSummarySection: View {
     let totalSessions: Int
     let totalDuration: Double
     let averageFillerCount: Double
     @State private var appeared = false
     
     var body: some View {
-        VStack(spacing: 16) {
-            HStack(spacing: 20) {
-                SummaryStatCard(
-                    value: "\(totalSessions)",
-                    label: "セッション",
-                    icon: "mic.circle.fill",
-                    color: .blue,
-                    delay: 0.0
-                )
+        ModernCard(elevation: .medium, padding: DesignSystem.Spacing.lg) {
+            VStack(spacing: DesignSystem.Spacing.lg) {
+                HStack {
+                    Text("録音統計")
+                        .font(DesignSystem.Typography.headline)
+                        .foregroundColor(DesignSystem.Colors.textPrimary)
+                    
+                    Spacer()
+                    
+                    Image(systemName: "chart.bar.xaxis")
+                        .font(.system(size: DesignSystem.IconSize.medium, weight: .semibold))
+                        .foregroundColor(DesignSystem.Colors.primary)
+                }
                 
-                SummaryStatCard(
-                    value: String(format: "%.0f分", totalDuration / 60),
-                    label: "総録音時間",
-                    icon: "clock.fill",
-                    color: .green,
-                    delay: 0.1
-                )
-                
-                SummaryStatCard(
-                    value: String(format: "%.1f", averageFillerCount),
-                    label: "平均フィラー",
-                    icon: "chart.bar.fill",
-                    color: .orange,
-                    delay: 0.2
-                )
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: DesignSystem.Spacing.md), count: 3), spacing: DesignSystem.Spacing.md) {
+                    ModernSummaryStatCard(
+                        value: "\(totalSessions)",
+                        label: "セッション",
+                        icon: "mic.circle.fill",
+                        color: DesignSystem.Colors.primary,
+                        delay: 0.0
+                    )
+                    
+                    ModernSummaryStatCard(
+                        value: String(format: "%.0f分", totalDuration / 60),
+                        label: "総録音時間",
+                        icon: "clock.fill",
+                        color: DesignSystem.Colors.success,
+                        delay: 0.1
+                    )
+                    
+                    ModernSummaryStatCard(
+                        value: String(format: "%.1f", averageFillerCount),
+                        label: "平均フィラー",
+                        icon: "chart.bar.fill",
+                        color: DesignSystem.Colors.warning,
+                        delay: 0.2
+                    )
+                }
             }
         }
-        .padding()
-        .background(
-            LinearGradient(
-                gradient: Gradient(colors: [Color.blue.opacity(0.1), Color.purple.opacity(0.05)]),
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-        )
+        .padding(.horizontal, DesignSystem.Spacing.md)
     }
 }
 
-struct SummaryStatCard: View {
+struct ModernSummaryStatCard: View {
     let value: String
     let label: String
     let icon: String
@@ -202,24 +215,25 @@ struct SummaryStatCard: View {
     @State private var appeared = false
     
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: DesignSystem.Spacing.sm) {
             Image(systemName: icon)
-                .font(.title2)
+                .font(.system(size: DesignSystem.IconSize.large, weight: .semibold))
                 .foregroundColor(color)
                 .scaleEffect(appeared ? 1.0 : 0.5)
-                .animation(.spring(response: 0.5, dampingFraction: 0.7).delay(delay), value: appeared)
+                .animation(DesignSystem.Animation.springBouncy.delay(delay), value: appeared)
             
             Text(value)
-                .font(.headline)
-                .fontWeight(.bold)
+                .font(DesignSystem.Typography.numberMedium)
+                .foregroundColor(DesignSystem.Colors.textPrimary)
                 .opacity(appeared ? 1.0 : 0.0)
-                .animation(.easeOut(duration: 0.5).delay(delay + 0.1), value: appeared)
+                .animation(DesignSystem.Animation.standard.delay(delay + 0.1), value: appeared)
             
             Text(label)
-                .font(.caption)
-                .foregroundColor(.secondary)
+                .font(DesignSystem.Typography.caption2)
+                .foregroundColor(DesignSystem.Colors.textSecondary)
                 .opacity(appeared ? 1.0 : 0.0)
-                .animation(.easeOut(duration: 0.5).delay(delay + 0.2), value: appeared)
+                .animation(DesignSystem.Animation.standard.delay(delay + 0.2), value: appeared)
+                .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
         .onAppear {
@@ -230,60 +244,61 @@ struct SummaryStatCard: View {
     }
 }
 
-// MARK: - Enhanced Search Bar
-struct EnhancedSearchBar: View {
+// MARK: - Modern Search Bar
+struct ModernSearchBar: View {
     @Binding var text: String
     @State private var isEditing = false
     
     var body: some View {
-        HStack {
-            HStack {
+        ModernCard(elevation: .low, padding: DesignSystem.Spacing.md) {
+            HStack(spacing: DesignSystem.Spacing.sm) {
                 Image(systemName: "magnifyingglass")
-                    .foregroundColor(isEditing ? .blue : .gray)
-                    .animation(.easeInOut(duration: 0.2), value: isEditing)
+                    .font(.system(size: DesignSystem.IconSize.medium, weight: .medium))
+                    .foregroundColor(isEditing ? DesignSystem.Colors.primary : DesignSystem.Colors.textTertiary)
+                    .animation(DesignSystem.Animation.quick, value: isEditing)
                 
                 TextField("録音タイトルや文字起こしを検索", text: $text, onEditingChanged: { editing in
-                    withAnimation(.easeInOut(duration: 0.2)) {
+                    withAnimation(DesignSystem.Animation.quick) {
                         isEditing = editing
                     }
                 })
-                .font(.subheadline)
+                .font(DesignSystem.Typography.body)
+                .foregroundColor(DesignSystem.Colors.textPrimary)
                 
                 if !text.isEmpty {
                     Button(action: {
-                        text = ""
+                        withAnimation(DesignSystem.Animation.quick) {
+                            text = ""
+                        }
                     }) {
                         Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.gray)
+                            .font(.system(size: DesignSystem.IconSize.medium, weight: .medium))
+                            .foregroundColor(DesignSystem.Colors.textTertiary)
                     }
                     .transition(.scale.combined(with: .opacity))
                 }
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 10)
-            .background(Color(.systemBackground))
-            .cornerRadius(12)
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(isEditing ? Color.blue : Color.gray.opacity(0.3), lineWidth: isEditing ? 2 : 1)
-                    .animation(.easeInOut(duration: 0.2), value: isEditing)
-            )
         }
+        .overlay(
+            RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.large)
+                .stroke(isEditing ? DesignSystem.Colors.primary : Color.clear, lineWidth: 2)
+                .animation(DesignSystem.Animation.quick, value: isEditing)
+        )
     }
 }
 
-// MARK: - Sort Options View
-struct SortOptionsView: View {
+// MARK: - Modern Sort Options View
+struct ModernSortOptionsView: View {
     @Binding var selection: HistoryView.SortOption
     
     var body: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: DesignSystem.Spacing.sm) {
             ForEach(HistoryView.SortOption.allCases, id: \.self) { option in
-                SortOptionButton(
+                ModernSortOptionButton(
                     option: option,
                     isSelected: selection == option,
                     action: {
-                        withAnimation(.easeInOut(duration: 0.3)) {
+                        withAnimation(DesignSystem.Animation.quick) {
                             selection = option
                         }
                     }
@@ -293,66 +308,73 @@ struct SortOptionsView: View {
     }
 }
 
-struct SortOptionButton: View {
+struct ModernSortOptionButton: View {
     let option: HistoryView.SortOption
     let isSelected: Bool
     let action: () -> Void
     
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 6) {
+            HStack(spacing: DesignSystem.Spacing.xs) {
                 Image(systemName: option.icon)
-                    .font(.caption)
+                    .font(.system(size: DesignSystem.IconSize.small, weight: .medium))
                 Text(option.rawValue)
-                    .font(.caption)
+                    .font(DesignSystem.Typography.caption)
+                    .fontWeight(.medium)
             }
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
+            .foregroundColor(isSelected ? DesignSystem.Colors.textInverse : DesignSystem.Colors.textSecondary)
+            .padding(.horizontal, DesignSystem.Spacing.md)
+            .padding(.vertical, DesignSystem.Spacing.sm)
             .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(isSelected ? Color.blue : Color(.systemGray5))
+                RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.pill)
+                    .fill(isSelected ? DesignSystem.Colors.primary : DesignSystem.Colors.backgroundSecondary)
             )
-            .foregroundColor(isSelected ? .white : .primary)
         }
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
+        .pressAnimation()
     }
 }
 
-// MARK: - Empty State View
-struct EmptyStateView: View {
+// MARK: - Modern Empty State View
+struct ModernEmptyStateView: View {
     let hasData: Bool
     @State private var animateIcon = false
     
     var body: some View {
-        VStack(spacing: 24) {
-            Image(systemName: hasData ? "magnifyingglass" : "mic.slash")
-                .font(.system(size: 64))
-                .foregroundColor(.gray)
-                .scaleEffect(animateIcon ? 1.1 : 1.0)
-                .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: animateIcon)
-                .onAppear {
-                    animateIcon = true
-                }
-            
-            VStack(spacing: 8) {
-                Text(hasData ? "検索結果がありません" : "録音履歴がありません")
-                    .font(.title3)
-                    .fontWeight(.medium)
-                    .foregroundColor(.primary)
+        ModernCard(elevation: .low, padding: DesignSystem.Spacing.xl) {
+            VStack(spacing: DesignSystem.Spacing.xl) {
+                Image(systemName: hasData ? "magnifyingglass" : "mic.slash")
+                    .font(.system(size: 60, weight: .thin))
+                    .foregroundColor(DesignSystem.Colors.textTertiary)
+                    .scaleEffect(animateIcon ? 1.1 : 1.0)
+                    .animation(
+                        Animation.easeInOut(duration: 1.5).repeatForever(autoreverses: true),
+                        value: animateIcon
+                    )
+                    .onAppear {
+                        animateIcon = true
+                    }
                 
-                Text(hasData ? "別のキーワードで検索してみてください" : "ホーム画面から録音を始めましょう")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
+                VStack(spacing: DesignSystem.Spacing.sm) {
+                    Text(hasData ? "検索結果がありません" : "録音履歴がありません")
+                        .font(DesignSystem.Typography.title2)
+                        .foregroundColor(DesignSystem.Colors.textPrimary)
+                        .multilineTextAlignment(.center)
+                    
+                    Text(hasData ? "別のキーワードで検索してみてください" : "ホーム画面から録音を始めましょう")
+                        .font(DesignSystem.Typography.body)
+                        .foregroundColor(DesignSystem.Colors.textSecondary)
+                        .multilineTextAlignment(.center)
+                }
             }
         }
-        .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.horizontal, DesignSystem.Spacing.md)
+        .frame(maxWidth: .infinity)
     }
 }
 
-// MARK: - Modern Session Card
-struct ModernSessionCard: View {
+// MARK: - Modern History Session Card
+struct ModernHistorySessionCard: View {
     let session: AudioSession
     let index: Int
     let onTap: () -> Void
@@ -386,103 +408,93 @@ struct ModernSessionCard: View {
     
     var body: some View {
         Button(action: onTap) {
-            VStack(spacing: 16) {
-                // ヘッダー
-                HStack {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(session.title ?? "録音セッション")
-                            .font(.headline)
-                            .fontWeight(.bold)
-                            .foregroundColor(.primary)
-                            .lineLimit(1)
-                        
-                        Text(session.createdAt?.formatted(date: .abbreviated, time: .shortened) ?? "")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    
-                    Spacer()
-                    
-                    Button(action: onDelete) {
-                        Image(systemName: "trash")
-                            .font(.title3)
-                            .foregroundColor(.red)
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                }
-                
-                // 統計情報
-                HStack(spacing: 16) {
-                    StatBadge(
-                        value: String(format: "%.1f分", session.duration / 60),
-                        icon: "clock.fill",
-                        color: .blue
-                    )
-                    
-                    StatBadge(
-                        value: "\(characterCount)文字",
-                        icon: "text.alignleft",
-                        color: .green
-                    )
-                    
-                    if let analysis = session.analysis {
-                        StatBadge(
-                            value: "\(analysis.fillerCount)個",
-                            icon: "exclamationmark.bubble.fill",
-                            color: .red
-                        )
-                    }
-                    
-                    Spacer()
-                }
-                
-                // 文字起こしプレビュー
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("文字起こし")
-                        .font(.subheadline)
-                        .fontWeight(.medium)
-                        .foregroundColor(.secondary)
-                    
-                    Text(transcriptionPreview)
-                        .font(.body)
-                        .foregroundColor(.primary)
-                        .lineLimit(3)
-                        .multilineTextAlignment(.leading)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(12)
-                
-                // 改善インジケーター
-                if let analysis = session.analysis,
-                   let improvement = calculateImprovement(for: analysis) {
+            ModernCard(elevation: .medium, padding: DesignSystem.Spacing.lg) {
+                VStack(spacing: DesignSystem.Spacing.lg) {
+                    // ヘッダー
                     HStack {
-                        Image(systemName: improvement >= 0 ? "arrow.up.circle.fill" : "arrow.down.circle.fill")
-                            .foregroundColor(improvement >= 0 ? .green : .red)
+                        VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
+                            Text(session.title ?? "録音セッション")
+                                .font(DesignSystem.Typography.bodyBold)
+                                .foregroundColor(DesignSystem.Colors.textPrimary)
+                                .lineLimit(1)
+                            
+                            Text(session.createdAt?.formatted(date: .abbreviated, time: .shortened) ?? "")
+                                .font(DesignSystem.Typography.caption)
+                                .foregroundColor(DesignSystem.Colors.textTertiary)
+                        }
                         
-                        Text(improvement >= 0 ? "前回より\(String(format: "%.1f", improvement))%改善" : "前回より\(String(format: "%.1f", abs(improvement)))%増加")
-                            .font(.caption)
-                            .fontWeight(.medium)
-                            .foregroundColor(improvement >= 0 ? .green : .red)
+                        Spacer()
+                        
+                        Button(action: onDelete) {
+                            Image(systemName: "trash")
+                                .font(.system(size: DesignSystem.IconSize.medium, weight: .medium))
+                                .foregroundColor(DesignSystem.Colors.error)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    
+                    // 統計情報
+                    HStack(spacing: DesignSystem.Spacing.sm) {
+                        ModernStatBadge(
+                            value: String(format: "%.1f分", session.duration / 60),
+                            icon: "clock.fill",
+                            color: DesignSystem.Colors.primary
+                        )
+                        
+                        ModernStatBadge(
+                            value: "\(characterCount)文字",
+                            icon: "text.alignleft",
+                            color: DesignSystem.Colors.success
+                        )
+                        
+                        if let analysis = session.analysis {
+                            ModernStatBadge(
+                                value: "\(analysis.fillerCount)個",
+                                icon: "exclamationmark.bubble.fill",
+                                color: DesignSystem.Colors.error
+                            )
+                        }
                         
                         Spacer()
                     }
+                    
+                    // 文字起こしプレビュー
+                    ModernCard(elevation: .low, padding: DesignSystem.Spacing.md) {
+                        VStack(alignment: .leading, spacing: DesignSystem.Spacing.sm) {
+                            Text("文字起こし")
+                                .font(DesignSystem.Typography.caption)
+                                .foregroundColor(DesignSystem.Colors.textSecondary)
+                            
+                            Text(transcriptionPreview)
+                                .font(DesignSystem.Typography.body)
+                                .foregroundColor(DesignSystem.Colors.textPrimary)
+                                .lineLimit(3)
+                                .multilineTextAlignment(.leading)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                    }
+                    
+                    // 改善インジケーター
+                    if let analysis = session.analysis,
+                       let improvement = calculateImprovement(for: analysis) {
+                        HStack(spacing: DesignSystem.Spacing.sm) {
+                            TrendIndicator(direction: improvement >= 0 ? .up : .down)
+                            
+                            Text(improvement >= 0 ? "前回より\(String(format: "%.1f", improvement))%改善" : "前回より\(String(format: "%.1f", abs(improvement)))%増加")
+                                .font(DesignSystem.Typography.caption)
+                                .foregroundColor(improvement >= 0 ? DesignSystem.Colors.success : DesignSystem.Colors.error)
+                            
+                            Spacer()
+                        }
+                    }
                 }
             }
-            .padding()
-            .background(cardGradient)
-            .cornerRadius(16)
-            .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(Color.primary.opacity(0.1), lineWidth: 1)
-            )
-            .shadow(color: .black.opacity(colorScheme == .dark ? 0.3 : 0.1), radius: 8, x: 0, y: 4)
         }
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
+        .pressAnimation()
         .scaleEffect(appeared ? 1.0 : 0.9)
         .opacity(appeared ? 1.0 : 0.0)
-        .animation(.easeOut(duration: 0.5).delay(Double(index) * 0.1), value: appeared)
+        .animation(DesignSystem.Animation.standard.delay(Double(index) * 0.1), value: appeared)
         .onAppear {
             withAnimation {
                 appeared = true
@@ -496,25 +508,25 @@ struct ModernSessionCard: View {
     }
 }
 
-struct StatBadge: View {
+struct ModernStatBadge: View {
     let value: String
     let icon: String
     let color: Color
     
     var body: some View {
-        HStack(spacing: 4) {
+        HStack(spacing: DesignSystem.Spacing.xs) {
             Image(systemName: icon)
-                .font(.caption)
+                .font(.system(size: DesignSystem.IconSize.small, weight: .medium))
                 .foregroundColor(color)
             
             Text(value)
-                .font(.caption)
+                .font(DesignSystem.Typography.caption2)
                 .fontWeight(.medium)
-                .foregroundColor(.primary)
+                .foregroundColor(DesignSystem.Colors.textPrimary)
         }
-        .padding(.horizontal, 8)
-        .padding(.vertical, 4)
+        .padding(.horizontal, DesignSystem.Spacing.sm)
+        .padding(.vertical, DesignSystem.Spacing.xs)
         .background(color.opacity(0.1))
-        .cornerRadius(8)
+        .cornerRadius(DesignSystem.CornerRadius.small)
     }
 }
